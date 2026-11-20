@@ -1,8 +1,6 @@
-# Programa de asignatura
+# Programa de asignatura: Inteligencia Artificial Aplicada
 
-## Inteligencia Artificial Aplicada: Agentes, Integración y Automatización
-
-## Programa de estudio — propuesta
+**Agentes, Integración y Automatización**
 
 **Duración:** 18 semanas · 4 horas por semana · **72 horas**  
 **Modalidad:** teórico-práctica, orientada a estudiantes de informática próximos a incorporarse al mundo laboral.  
@@ -17,12 +15,6 @@ Diseñar, implementar, integrar y evaluar soluciones de inteligencia artificial 
 1. **RA1:** Construir y evaluar un agente de IA que seleccione herramientas, ejecute acciones acotadas y verifique resultados.
 2. **RA2:** Implementar un LLM local mediante Ollama e integrarlo de forma segura con una aplicación PHP y una base de datos MySQL.
 3. **RA3:** Desarrollar un flujo de automatización con n8n que procese correos, los clasifique, genere borradores de respuesta y registre operaciones en MySQL.
-
-## Semana 0 — Laboratorio preparatorio AWS Academy
-
-**Actividad adicional previa a las 18 semanas (4 horas, no incluidas en las 72 horas oficiales).** Cada estudiante prepara una EC2 individual con Ubuntu Server 24.04 LTS y las herramientas del semestre, con una configuración ya probada de **EC2 t2.large, 99 GiB EBS y Ollama `qwen2.5:1.5b`**.
-
-**[Guía autónoma de Semana 0 — comenzar aquí](semana-00-laboratorio/guia-paso-a-paso.md)**: 13 pasos con comandos, resultados esperados, acceso por SSH, interfaces gráficas, pruebas y recuperación.
 
 ### Unidades y productos integradores
 
@@ -64,18 +56,33 @@ Cada semana combina fundamentos breves, implementación guiada, práctica autón
 
 Se contemplan **tres evaluaciones prácticas integradoras**, al cierre de las semanas 5, 13 y 18, con evidencias de ejecución, código, pruebas y defensa técnica. Las ponderaciones y rúbricas definitivas quedan pendientes de aprobación institucional. La distribución de calificaciones deberá formalizarse antes de impartir la asignatura. Las actividades intermedias aportan retroalimentación formativa.
 
-### Recursos y condiciones para el aprendizaje
+### Recursos tecnológicos y materiales de apoyo
 
-La asignatura contempla actividades prácticas con Python, Git, Ollama, PHP, MySQL y n8n, utilizando un entorno individual en AWS Academy. Los estudiantes trabajarán con datos ficticios y desarrollarán progresivamente tres productos integradores, considerando seguridad, privacidad, trazabilidad y validación de resultados.
+Para las actividades prácticas se utilizarán Python, Git, Ollama, PHP, MySQL y n8n, sobre un entorno individual de AWS Academy. Se trabajará con información ficticia y controles de seguridad, privacidad y trazabilidad.
 
-Como actividad preparatoria adicional, se contempla una **Semana 0 de cuatro horas**, no incluida en las 72 horas de la asignatura, destinada a familiarizarse con el entorno de trabajo y comprobar el acceso a las herramientas.
+La **Semana 0** es una actividad preparatoria de cuatro horas, adicional a las 72 horas de la asignatura. Su finalidad es habilitar y comprobar el entorno de trabajo; no constituye una cuarta unidad curricular.
 
-Los procedimientos operativos se mantienen fuera de este programa y pueden consultarse en la [guía autónoma de Semana 0](semana-00-laboratorio/guia-paso-a-paso.md). El [caso transversal de Mesa de Ayuda Inteligente](infraestructura-empresa/README.md) sirve de contexto para las actividades prácticas y las integraciones de las tres unidades.
+| Recurso de apoyo | Función formativa |
+|---|---|
+| [Guía autónoma de Semana 0](semana-00-laboratorio/guia-paso-a-paso.md) | Preparación y verificación del laboratorio |
+| [Material complementario de Semana 0](semana-00-laboratorio/README.md) | Acceso a demostraciones, pruebas y orientaciones técnicas |
+| [Caso transversal: sistemas empresariales de referencia](infraestructura-empresa/README.md) | Contexto de prácticas e integración de agentes, aplicaciones y automatizaciones |
+| [Organización de materiales del curso](docs/organizacion-repositorio.md) | Localización de las unidades, recursos y documentación de apoyo |
 
-### Bibliografía y recursos de consulta iniciales
+### Bibliografía y recursos de consulta
 
-- [Ollama — documentación](https://docs.ollama.com/)
-- [n8n — documentación](https://docs.n8n.io/)
-- [PHP — manual](https://www.php.net/manual/es/)
-- [MySQL — documentación](https://dev.mysql.com/doc/)
+**Bibliografía básica (documentación técnica de referencia):**
+
+- [Ollama — documentación oficial](https://docs.ollama.com/)
+- [n8n — documentación oficial](https://docs.n8n.io/)
+- [Python — documentación oficial](https://docs.python.org/3/)
+- [PHP — manual oficial](https://www.php.net/manual/es/)
+- [MySQL — documentación oficial](https://dev.mysql.com/doc/)
+
+**Recursos complementarios:**
+
 - [OWASP — seguridad de aplicaciones](https://owasp.org/)
+- [Git — documentación](https://git-scm.com/doc)
+- [AWS Academy — información institucional](https://aws.amazon.com/training/awsacademy/)
+
+*Esta relación constituye una selección inicial de recursos técnicos. La bibliografía académica especializada y sus referencias formales se incorporarán en la versión sometida a validación curricular.*
