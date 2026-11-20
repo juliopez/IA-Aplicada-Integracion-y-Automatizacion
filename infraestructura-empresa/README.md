@@ -73,4 +73,4 @@ docker compose down
 
 `down` conserva el volumen; **no ejecutar `down -v`** salvo que se desee borrar todos los datos. Detener EC2 desde la consola AWS al terminar. Los sistemas no están destinados a exposición pública.
 
-**Estado:** implementación inicial; requiere prueba de integración en Docker/EC2 autorizada antes de entregar a estudiantes.
+**Estado de referencia (20-11-2026):** aplicaciones y APIs probadas en EC2 Ubuntu 24.04; prueba `probar.sh` satisfactoria y ambas interfaces accesibles mediante túnel SSH. La instalación debe repetirse en cada EC2. Esta validación no implica que los agentes de IA estén integrados con las APIs.
