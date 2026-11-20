@@ -43,15 +43,18 @@ No publicar puertos 8081/8082 (aplicaciones Docker), 3307 (MySQL publicado en lo
 | F. Seguridad, evidencias, detención y reinicio | 35 | Lista de verificación y EC2 detenida |
 | **Total** | **240** | **Entorno documentado** |
 
-**Condición realista:** descargas de paquetes, instalación de modelos y resolución de incidencias pueden exceder el tiempo estimado. El tramo E se validó en una EC2 de referencia el 20-11-2026, pero sus descargas pueden exceder el tiempo previsto. Para estudiantes, la descarga del modelo y el arranque de n8n dependen de recursos y autorización docente; documentar cualquier etapa pendiente.
+**Importante:** los tiempos son orientativos. Si una descarga o una instalación tarda más de lo previsto, continuar cuando el docente lo indique. No descargar modelos ni ampliar recursos sin autorización.
 
 ## Procedimiento completo
 
-1. [Arquitectura y decisiones pendientes](arquitectura.md).
-2. [Acceso AWS Academy y creación segura de EC2](aws-ec2.md).
-3. [Instalación paso a paso, con comandos](instalacion.md).
-4. [Pruebas, evidencias y resolución de problemas](validacion.md).
-5. [Costos, seguridad y operación diaria](costos-y-seguridad.md).
+1. **Preparar el laboratorio:** [AWS Academy y creación de EC2](aws-ec2.md), secciones 1–2.
+2. **Conectarse:** [llave SSH, terminal y VS Code](aws-ec2.md), secciones 3–5.
+3. **Instalar herramientas básicas:** [Ubuntu, Git, Python y PHP](instalacion.md), apartados A–C.
+4. **Desplegar la empresa simulada:** [Docker, Compose y sistemas empresariales](instalacion.md), apartado D.
+5. **Instalar el modelo local:** [Ollama](instalacion.md), apartado E, solo con autorización docente.
+6. **Configurar automatizaciones:** [Node.js y n8n](instalacion.md), apartado F.
+7. **Comprobar los resultados:** [validación y evidencias](validacion.md); usar [túneles SSH](aws-ec2.md), sección 6, para las interfaces web.
+8. **Cerrar correctamente:** [costos, seguridad y detención de EC2](costos-y-seguridad.md).
 
 **Orden obligatorio:** AWS → SSH → actualización → Python/Git → PHP/Docker Compose → sistemas empresariales → Ollama/Node/n8n → pruebas → detener instancia. No instalar todos los servicios a la vez sin comprobar recursos.
 
@@ -64,8 +67,10 @@ En un repositorio **privado** del estudiante o en el medio institucional aprobad
 - EC2 Ubuntu accesible mediante SSH; llave protegida.
 - Git y Python funcionales; entorno virtual probado.
 - PHP CLI y Docker Compose verificados; despliegue de ambos sistemas y MySQL comprobado cuando el entorno lo permita, o documentado como pendiente.
-- Instalación de Ollama y Node/n8n documentada; la referencia ejecutó `qwen2.5:1.5b` y n8n 2.35.7 mediante `systemd`. Reproducir según recursos autorizados.
+- Ollama y Node/n8n instalados y comprobados cuando los recursos autorizados lo permitan; registrar explícitamente cualquier prueba pendiente.
 - Puertos internos no expuestos públicamente.
 - Registro de consumo y detención de EC2 demostrados.
 
-**Caso transversal aprobado:** [Mesa de Ayuda Inteligente](../infraestructura-empresa/README.md). Los sistemas empresariales se entregan preconstruidos en Docker; los tres productos de IA se desarrollan en Ubuntu. **Referencia validada el 20-11-2026:** Docker/MySQL y las dos interfaces, Ollama con inferencia y selección de herramienta, y n8n como servicio `systemd`. Cada estudiante debe repetir las pruebas; todavía no se ha acreditado un agente que ejecute acciones reales a través de la API.
+**Caso transversal:** [Mesa de Ayuda Inteligente](../infraestructura-empresa/README.md). Los sistemas empresariales se entregan preconstruidos en Docker; los productos de IA se desarrollarán durante el curso en Ubuntu. **Semana 0 no exige desarrollar ni integrar un agente:** únicamente dejar el entorno preparado y verificar sus componentes.
+
+> **Para el estudiante:** seguir los ocho pasos en orden, comprobar el resultado indicado en cada sección y registrar las evidencias. Los antecedentes de pruebas e incidencias del docente están en una [bitácora separada](../docs/bitacora-tecnica-semana-00.md); no son pasos adicionales.
