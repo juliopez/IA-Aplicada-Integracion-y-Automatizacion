@@ -8,7 +8,7 @@ Dos sistemas empresariales **independientes** para las prácticas de IA. Los est
 
 ## Preparación en EC2 Ubuntu 24.04
 
-Requisitos: Docker Engine + plugin Docker Compose, Git y OpenSSL. La elección de instancia EC2 está pendiente. En la carpeta del proyecto:
+Requisitos: Docker Engine + plugin Docker Compose, Git y OpenSSL. La configuración de referencia de EC2 está documentada en la [arquitectura de Semana 0](../semana-00-laboratorio/arquitectura.md). En la carpeta del proyecto:
 
 ```bash
 bash preparar.sh
