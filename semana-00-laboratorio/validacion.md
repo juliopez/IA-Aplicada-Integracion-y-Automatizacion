@@ -15,7 +15,7 @@
 | V08 | Ollama e inferencia | `ollama --version; ollama show qwen2.5:1.5b` y consulta de texto en `instalacion.md` | Servicio activo, respuesta de texto y capacidad `tools` declarada |
 | V08b | Selección real de herramienta | Solicitud a `/api/chat` (comando siguiente) | `message.tool_calls[0].function.name` es `consultar_tickets`; no implica ejecutar la API |
 | V09 | Node | `node --version; npm --version` | Versiones disponibles |
-| V10 | n8n | `n8n --version` | Versión disponible si se instaló |
+| V10 | n8n | `n8n --version; sudo systemctl is-enabled n8n; sudo systemctl is-active n8n` y `curl -I http://127.0.0.1:5678/` | Versión 2.35.7 en referencia; servicio `enabled`, `active`, respuesta HTTP 200 |
 | V11 | Seguridad | `sudo ss -lntp` | 8081, 8082 y 3307 solo en loopback; Ollama/n8n sin exposición pública |
 | V12 | Presupuesto | AWS Academy/EC2 | Crédito revisado; EC2 detenida al finalizar |
 
@@ -106,13 +106,15 @@ free -h
 ```
 Si falta RAM, detener la prueba y registrar el límite; no cambiar instancia ni descargar modelos mayores por cuenta propia.
 
-**n8n no inicia**  
+**n8n no inicia o queda en `activating (auto-restart)`**  
 ```bash
 node --version
 n8n --version
+sudo systemctl status n8n --no-pager
+sudo journalctl -u n8n -n 50 --no-pager
 sudo ss -lntp | grep ':5678' || true
 ```
-Verificar compatibilidad Node/n8n y memoria. No publicar el puerto para resolver el problema.
+Si el registro indica `n8n's port 5678 is already in use`, **detener primero con Ctrl+C la instancia manual de n8n**, si sigue abierta, y después ejecutar `sudo systemctl restart n8n`. Verificar `active (running)` y HTTP 200; no dar por aprobado un estado `activating` ni solo la respuesta HTTP. El aviso sobre `confluenceCloudOAuth2Api` se observó en la referencia sin impedir el arranque final. Si persiste el error, revisar proceso dueño del puerto antes de detenerlo. No publicar el puerto para resolverlo.
 
 **MySQL de Docker no inicia**  
 Desde `infraestructura-empresa/`:
@@ -143,5 +145,5 @@ Verificar la ruta real de `.pem` en el computador personal y usarla en `ssh -i`;
 2. Iniciar **la misma** EC2 (`Start`, nunca `Launch` de otra).
 3. Consultar IP pública actual y actualizar `~/.ssh/config`.
 4. Conectarse y verificar `df -h /` y archivos `~/ia-aplicada`.
-5. Iniciar **solo** lo necesario: en `infraestructura-empresa/`, `sudo docker compose start` (o `sudo docker compose up -d --build` en el primer despliegue); para Ollama, `sudo systemctl start ollama`; para n8n, iniciar la sesión según la guía.
-6. Al terminar, `sudo docker compose stop` desde la carpeta del proyecto, detener Ollama/n8n si siguen activos y luego EC2; confirmar `Stopped`.
+5. Iniciar **solo** lo necesario: en `infraestructura-empresa/`, `sudo docker compose start` (o `sudo docker compose up -d --build` en el primer despliegue); para Ollama, `sudo systemctl start ollama`; para n8n, `sudo systemctl start n8n` (si no está ya activo por inicio automático).
+6. Al terminar, `sudo docker compose stop` desde la carpeta del proyecto, detener Ollama/n8n con `sudo systemctl stop ollama n8n` si siguen activos y luego EC2; confirmar `Stopped`.
