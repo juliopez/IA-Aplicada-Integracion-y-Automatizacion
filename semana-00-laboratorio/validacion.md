@@ -10,7 +10,8 @@
 | V04 | Git | `git --version` | Versión informada |
 | V05 | Docker | `sudo docker version; sudo docker compose version` | Cliente, daemon y plugin disponibles |
 | V06 | PHP | `php -v` | Versión disponible |
-| V07 | Sistemas empresariales | `sudo docker compose ps; bash probar.sh` (en `infraestructura-empresa/`) | Dos APIs, MySQL y operaciones verificadas; **pendiente hasta ejecutar** |
+| V07 | Sistemas empresariales | `sudo docker compose ps; bash probar.sh` (en `infraestructura-empresa/`) | Dos APIs, MySQL y operaciones verificadas en prueba de referencia EC2 (20-11-2026); repetir por estudiante |
+| V07b | Interfaces gráficas | Túnel SSH y navegador local para tickets y académico | Ambas interfaces y registros visibles; comprobado en EC2 de referencia (20-11-2026) |
 | V08 | Ollama | `ollama --version` | Versión disponible; inferencia pendiente si no autorizada |
 | V09 | Node | `node --version; npm --version` | Versiones disponibles |
 | V10 | n8n | `n8n --version` | Versión disponible si se instaló |
@@ -89,6 +90,20 @@ sudo docker compose logs --tail=60 db
 sudo docker compose config --quiet
 ```
 Si aparece `01-init.sql: Permission denied`, comprobar permisos con `ls -l db/init.local.sql` y ejecutar la versión actualizada de `bash preparar.sh`. El SQL debe ser legible para el usuario MySQL dentro del contenedor. **No borrar el volumen automáticamente:** un arranque fallido puede haber dejado una inicialización parcial; verificar antes de cualquier reinicialización.
+
+**Recuperación excepcional de primer despliegue fallido, sin datos de trabajo:** confirmar que `preparar.sh` corrigió los permisos (`-rw-r--r--`), inspeccionar `sudo docker compose ps -a`, `sudo docker volume ls` y, si es necesario, examinar el volumen en modo lectura. **Solo si se ha confirmado que el volumen pertenece exclusivamente a una instalación inicial descartable y no contiene datos que conservar**, reinicializar con:
+
+```bash
+sudo docker compose down -v
+sudo docker compose up -d --build
+sudo docker compose ps
+bash probar.sh
+```
+
+`down -v` **elimina definitivamente las bases de datos del proyecto**. Nunca utilizarlo como solución general para instalaciones con datos. La prueba de referencia EC2 del 20-11-2026 requirió esta recuperación después de un fallo de permisos; posteriormente MySQL quedó saludable y `probar.sh` fue satisfactorio.
+
+**Túnel SSH: llave inexistente o puerto local ocupado**  
+Verificar la ruta real de `.pem` en el computador personal y usarla en `ssh -i`; ejecutar `chmod 600` sobre esa llave. Si `bind [127.0.0.1]:8081: Address already in use`, detener el intento con Ctrl+C y utilizar `-L 18081:127.0.0.1:8081 -L 18082:127.0.0.1:8082` según `aws-ec2.md`. Verificar en el navegador `http://localhost:18081` y `http://localhost:18082`.
 
 ## Reanudación en otra sesión
 
