@@ -62,13 +62,28 @@ Cada semana combina fundamentos breves, implementación guiada, práctica autón
 
 Se contemplan **tres evaluaciones prácticas integradoras**, al cierre de las semanas 5, 13 y 18, con evidencias de ejecución, código, pruebas y defensa técnica. Las ponderaciones y rúbricas definitivas quedan pendientes de aprobación institucional. Las actividades intermedias aportan retroalimentación formativa.
 
-### Infraestructura y consideraciones de seguridad
+### Infraestructura tecnológica propuesta
 
-- Equipo capaz de ejecutar un modelo local con Ollama; la selección del modelo se ajustará al hardware disponible.
-- Python y entorno de desarrollo; PHP, MySQL y servidor web; n8n en despliegue local o de laboratorio.
-- Repositorio GitHub para código, instrucciones, evidencias y documentación, **sin publicar credenciales ni datos privados**.
-- Datos sintéticos y cuentas de correo de prueba; consultas parametrizadas, permisos mínimos, registro de acciones y revisión humana antes del envío de correos.
-- Ollama permite inferencia local; cualquier integración con servicios externos (por ejemplo, correo alojado en la nube) exige conectividad y una evaluación específica de privacidad.
+El curso utilizará **AWS Academy Learner Lab**, con **una instancia Amazon EC2 individual por estudiante** y **Ubuntu Server 24.04 LTS**. Cada estudiante administrará su propio entorno Linux, al que accederá desde su computador mediante **SSH** (terminal o VS Code Remote - SSH). La misma instancia servirá para los tres bloques, de modo que las implementaciones puedan desarrollarse y compararse sobre una infraestructura común.
+
+| Elemento | Configuración acordada |
+|---|---|
+| Plataforma | AWS Academy / Amazon EC2 |
+| Asignación | Una instancia individual por estudiante |
+| Sistema operativo | Ubuntu Server 24.04 LTS |
+| Acceso | SSH; túneles SSH para servicios web y APIs locales |
+| Bloque 1: agentes | Python, pip/venv, Git y cliente de API LLM |
+| Bloque 2: IA local | Apache, PHP, MySQL, Ollama y modelo LLM por definir |
+| Bloque 3: flujos | Node.js, n8n, MySQL y correo de laboratorio |
+| Desarrollo y evidencias | Git/GitHub y editor local conectado por SSH |
+| Crédito disponible | **USD 50 por estudiante para todo el semestre** |
+| Política de uso | EC2 encendida solo durante clases y trabajo práctico; detener al finalizar |
+
+**Decisiones pendientes:** región habilitada en AWS Academy, familia/tamaño de EC2, arquitectura de procesador, RAM, capacidad del volumen EBS y modelo Ollama. Estos parámetros se determinarán después de comprobar las restricciones del laboratorio y el rendimiento de inferencia. **No se presupone que los USD 50 alcancen para cualquier configuración**; EBS y otros recursos pueden seguir generando cargos con EC2 detenida.
+
+**Seguridad y operación:** acceso SSH restringido a la IP del estudiante; MySQL (3306), Ollama (11434) y n8n (5678) sin exposición pública; uso de túneles SSH, credenciales protegidas, datos sintéticos, consultas autorizadas y aprobación humana antes de enviar correos. El código y las evidencias se versionarán **sin publicar llaves, tokens, contraseñas ni datos privados**. Las conexiones con APIs o correo externos requieren conectividad y controles específicos.
+
+La instalación, verificación, recuperación y detención de la infraestructura se desarrollan en la **[Semana 0 — Laboratorio AWS Academy](semana-00-laboratorio/README.md)**, actividad preparatoria de cuatro horas adicionales a las 72 horas del curso.
 
 ### Organización prevista del repositorio
 
