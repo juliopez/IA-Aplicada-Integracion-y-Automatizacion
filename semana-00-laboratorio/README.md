@@ -22,13 +22,14 @@ Computador personal (VS Code / terminal / navegador)
           ▼
 AWS Academy Learner Lab → EC2 individual (Ubuntu 24.04)
           ├─ Bloque 1: Python + Git + cliente LLM/API
-          ├─ Bloque 2: Apache + PHP + MySQL + Ollama
-          └─ Bloque 3: Node.js + n8n + correo de prueba
+          ├─ Bloque 2: PHP CLI + Ollama (desarrollo en Ubuntu)
+          ├─ Bloque 3: Node.js + n8n + correo de prueba
+          └─ Docker Compose: mesa de ayuda + sistema académico + MySQL
                   │
           Volumen EBS persistente
 ```
 
-No publicar puertos 3306 (MySQL), 11434 (Ollama) ni 5678 (n8n). Para acceder a aplicaciones de laboratorio utilizar **túneles SSH**. No utilizar datos reales ni credenciales personales de producción.
+No publicar puertos 8081/8082 (aplicaciones Docker), 3307 (MySQL publicado en loopback), 11434 (Ollama) ni 5678 (n8n). Para acceder a aplicaciones de laboratorio utilizar **túneles SSH**. No utilizar datos reales ni credenciales personales de producción.
 
 ## Ruta del laboratorio (240 minutos)
 
@@ -37,8 +38,8 @@ No publicar puertos 3306 (MySQL), 11434 (Ollama) ni 5678 (n8n). Para acceder a a
 | A. AWS Academy, presupuesto y decisiones pendientes | 25 | Acceso confirmado y hoja de control |
 | B. EC2, llave, SSH y red | 45 | Ubuntu accesible con usuario no root |
 | C. Sistema, Git y Python | 35 | Entorno Python aislado y Git operativos |
-| D. Apache, PHP y MySQL | 45 | Aplicación PHP local y SQL de prueba |
-| E. Ollama, Node.js y n8n | 55 | Binarios instalados; ejecución condicional a recursos |
+| D. PHP, Docker Engine y Compose | 45 | PHP CLI y Docker Compose disponibles |
+| E. Sistemas empresariales, Ollama, Node.js y n8n | 55 | Despliegue preparado; ejecución sujeta a recursos y validación |
 | F. Seguridad, evidencias, detención y reinicio | 35 | Lista de verificación y EC2 detenida |
 | **Total** | **240** | **Entorno documentado** |
 
@@ -52,7 +53,7 @@ No publicar puertos 3306 (MySQL), 11434 (Ollama) ni 5678 (n8n). Para acceder a a
 4. [Pruebas, evidencias y resolución de problemas](validacion.md).
 5. [Costos, seguridad y operación diaria](costos-y-seguridad.md).
 
-**Orden obligatorio:** AWS → SSH → actualización → Python/Git → PHP/MySQL → instalación de Ollama/Node/n8n → pruebas → detener instancia. No instalar todos los servicios a la vez sin comprobar recursos.
+**Orden obligatorio:** AWS → SSH → actualización → Python/Git → PHP/Docker Compose → sistemas empresariales → Ollama/Node/n8n → pruebas → detener instancia. No instalar todos los servicios a la vez sin comprobar recursos.
 
 ## Entrega individual
 
@@ -62,9 +63,9 @@ En un repositorio **privado** del estudiante o en el medio institucional aprobad
 
 - EC2 Ubuntu accesible mediante SSH; llave protegida.
 - Git y Python funcionales; entorno virtual probado.
-- PHP/Apache y MySQL verificados localmente.
+- PHP CLI y Docker Compose verificados; despliegue de ambos sistemas y MySQL comprobado cuando el entorno lo permita, o documentado como pendiente.
 - Instalación de Ollama y Node/n8n documentada; ejecución de modelo y n8n **condicionada** a la capacidad autorizada.
 - Puertos internos no expuestos públicamente.
 - Registro de consumo y detención de EC2 demostrados.
 
-**Importante:** la infraestructura no determina el caso de estudio transversal; este se definirá después de validar capacidades y restricciones.
+**Caso transversal aprobado:** [Mesa de Ayuda Inteligente](../infraestructura-empresa/README.md). Los sistemas empresariales se entregan preconstruidos en Docker; los tres productos de IA se desarrollan en Ubuntu. **La configuración Docker aún requiere validación real de integración**, por lo que los resultados no deben declararse exitosos sin ejecutarlos.
