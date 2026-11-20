@@ -19,7 +19,7 @@ curl -fsS http://127.0.0.1:8081/api/health
 curl -fsS http://127.0.0.1:8082/api/health
 ```
 
-El script genera contraseñas y token aleatorios en `.env`, además de `db/init.local.sql`. Ambos están excluidos de Git. La inicialización SQL ocurre **solo en el primer arranque del volumen**.
+El script genera contraseñas y token aleatorios en `.env`, además de `db/init.local.sql`. Ambos están excluidos de Git. `.env` permanece privado (600); `db/init.local.sql` debe ser legible por el usuario MySQL del contenedor (644). Utilizar exclusivamente datos y contraseñas de laboratorio, sin otros usuarios locales no confiables en EC2. La inicialización SQL ocurre **solo en el primer arranque del volumen**.
 
 ## Probar APIs
 
@@ -57,6 +57,10 @@ Abrir http://localhost:8081 y http://localhost:8082. Los puertos se publican **s
 | Académico | GET | /api/auditoria | Historial |
 
 Las escrituras requieren cabecera `X-API-Key`; se registran en auditoría. El token compartido es un **control básico de laboratorio**, no autenticación empresarial de producción. No utilizar datos reales.
+
+## Incidencia conocida: Permission denied al inicializar MySQL
+
+Si `sudo docker compose logs --tail=60 db` muestra `01-init.sql: Permission denied`, actualizar el repositorio y ejecutar `bash preparar.sh` para ajustar los permisos **sin cambiar las contraseñas**. El primer arranque fallido puede haber creado parcialmente el volumen MySQL; no ejecutar `down -v` sin verificar que no contiene datos que deban conservarse. Solicitar instrucciones antes de reinicializar.
 
 ## Detener y recuperar
 
