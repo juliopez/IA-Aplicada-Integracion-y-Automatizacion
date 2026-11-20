@@ -37,7 +37,7 @@
                                    MySQL Docker 127.0.0.1:3307
 ```
 
-La IP pública puede **cambiar** tras detener/iniciar EC2. Los túneles se establecen desde el computador del estudiante, no desde EC2. La IP pública puede cambiar tras detener e iniciar la instancia.
+La IP pública puede **cambiar** tras detener/iniciar EC2. Los túneles se establecen desde el computador del estudiante, no desde EC2.
 
 ## Persistencia y límites
 
