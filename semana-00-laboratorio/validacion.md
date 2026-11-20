@@ -10,14 +10,14 @@
 | V04 | Git | `git --version` | Versión informada |
 | V05 | Docker | `sudo docker version; sudo docker compose version` | Cliente, daemon y plugin disponibles |
 | V06 | PHP | `php -v` | Versión disponible |
-| V07 | Sistemas empresariales | `sudo docker compose ps; bash probar.sh` (en `infraestructura-empresa/`) | Dos APIs, MySQL y operaciones verificadas en prueba de referencia EC2 (20-11-2026); repetir por estudiante |
-| V07b | Interfaces gráficas | Túnel SSH y navegador local para tickets y académico | Ambas interfaces y registros visibles; comprobado en EC2 de referencia (20-11-2026) |
+| V07 | Sistemas empresariales | `sudo docker compose ps; bash probar.sh` (en `infraestructura-empresa/`) | Dos APIs y MySQL activos; operaciones del script satisfactorias |
+| V07b | Interfaces gráficas | Túnel SSH y navegador local para tickets y académico | Ambas interfaces y registros visibles en navegador local |
 | V08 | Ollama e inferencia | `ollama --version; ollama show qwen2.5:1.5b` y consulta de texto en `instalacion.md` | Servicio activo, respuesta de texto y capacidad `tools` declarada |
 | V08b | Selección real de herramienta | Solicitud a `/api/chat` (comando siguiente) | `message.tool_calls[0].function.name` es `consultar_tickets`; no implica ejecutar la API |
 | V09 | Node | `node --version; npm --version` | Versiones disponibles |
-| V10 | n8n | `n8n --version; sudo systemctl is-enabled n8n; sudo systemctl is-active n8n` y `curl -I http://127.0.0.1:5678/` | Versión 2.35.7 en referencia; servicio `enabled`, `active`, respuesta HTTP 200 |
+| V10 | n8n | `n8n --version; sudo systemctl is-enabled n8n; sudo systemctl is-active n8n` y `curl -I http://127.0.0.1:5678/` | Servicio `enabled`, `active`, respuesta HTTP 200 |
 | V11 | Seguridad | `sudo ss -lntp` | 8081, 8082 y 3307 solo en loopback; Ollama/n8n sin exposición pública |
-| V12 | Presupuesto | AWS Academy/EC2 | Crédito revisado; EC2 detenida al finalizar |
+| V12 | Cierre | AWS Academy/EC2 | Misma instancia en estado `Stopped` al finalizar |
 
 ```bash
 # Dentro de EC2, tras la instalación:
@@ -96,7 +96,7 @@ Verificar estado `Running`, IP pública actual, región y security group. La IP 
 Verificar si hay otra operación de paquetes activa: `ps aux | grep -E 'apt|dpkg'`. No borrar archivos lock ni matar procesos de actualización sin diagnóstico.
 
 **`No space left on device`**  
-Ejecutar `df -h /` y `sudo du -sh /var/cache/apt/archives ~/ia-aplicada 2>/dev/null`. No ampliar EBS sin autorización docente.
+Ejecutar `df -h /` y `sudo du -sh /var/cache/apt/archives ~/ia-aplicada 2>/dev/null`. No borrar datos ni modificar el volumen sin revisar primero la causa.
 
 **Ollama no responde**  
 ```bash
@@ -141,7 +141,7 @@ Verificar la ruta real de `.pem` en el computador personal y usarla en `ssh -i`;
 
 ## Reanudación en otra sesión
 
-1. Abrir laboratorio AWS Academy y comprobar que el crédito sigue disponible.
+1. Abrir el laboratorio AWS Academy e iniciar la sesión.
 2. Iniciar **la misma** EC2 (`Start`, nunca `Launch` de otra).
 3. Consultar IP pública actual y actualizar `~/.ssh/config`.
 4. Conectarse y verificar `df -h /` y archivos `~/ia-aplicada`.
