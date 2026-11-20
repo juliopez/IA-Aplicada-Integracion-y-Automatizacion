@@ -50,4 +50,4 @@ Los puertos Docker 8081, 8082 y 3307 se publican únicamente en 127.0.0.1 de EC2
 
 ## Caso transversal
 
-Los dos sistemas de referencia se encuentran en [`infraestructura-empresa/`](../infraestructura-empresa/README.md). Los agentes Python, PHP/Ollama y n8n se ejecutan en Ubuntu y consumen APIs HTTP locales. **Pruebas de referencia realizadas en EC2 el 20-11-2026:** Docker/MySQL, ambas aplicaciones, Ollama con `qwen2.5:1.5b` y n8n 2.35.7 bajo `systemd`. La selección de herramienta en Ollama no acredita todavía una llamada efectiva a las APIs. El dimensionamiento definitivo para cada estudiante sigue sujeto al presupuesto y la autorización docente.
+Los dos sistemas de referencia se encuentran en [`infraestructura-empresa/`](../infraestructura-empresa/README.md). Los agentes Python, PHP/Ollama y n8n se ejecutan en Ubuntu y consumen APIs HTTP locales. En Semana 0 solo se preparan y verifican los servicios; la integración funcional de los agentes se realiza durante el curso. El dimensionamiento definitivo para cada estudiante sigue sujeto al presupuesto y la autorización docente.
