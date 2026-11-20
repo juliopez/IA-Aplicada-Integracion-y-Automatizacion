@@ -16,6 +16,12 @@ Diseñar, implementar, integrar y evaluar soluciones de inteligencia artificial 
 2. **RA2:** Implementar un LLM local mediante Ollama e integrarlo de forma segura con una aplicación PHP y una base de datos MySQL.
 3. **RA3:** Desarrollar un flujo de automatización con n8n que procese correos, los clasifique, genere borradores de respuesta y registre operaciones en MySQL.
 
+## Semana 0 — Laboratorio preparatorio AWS Academy
+
+**Actividad adicional previa a las 18 semanas (4 horas, no incluidas en las 72 horas oficiales).** Cada estudiante prepara una EC2 individual con Ubuntu Server 24.04 LTS y las herramientas del semestre, con un máximo de USD 50 de crédito AWS Academy por estudiante. La selección de familia/tamaño EC2, almacenamiento y modelo Ollama queda **pendiente de validación docente**.
+
+**[Abrir laboratorio completo de Semana 0](semana-00-laboratorio/README.md)**: incluye los dos videos del docente sobre acceso a AWS Academy y creación de EC2, comandos de instalación, SSH y túneles, pruebas, recuperación, seguridad y control de costos.
+
 ### Unidades y productos integradores
 
 | Unidad | Semanas | Horas | Producto final |
@@ -68,6 +74,7 @@ Se contemplan **tres evaluaciones prácticas integradoras**, al cierre de las se
 
 ```text
 README.md
+semana-00-laboratorio/
 bloque-01-agentes/
 bloque-02-ollama-php-mysql/
 bloque-03-n8n/
