@@ -2,7 +2,7 @@
 
 ## Regla de presupuesto
 
-Cada estudiante dispone de **hasta USD 50** para el semestre según AWS Academy. No interpretar el crédito como USD 50 disponibles exclusivamente para EC2: EBS, direcciones IPv4 públicas, transferencias y otros recursos pueden generar cargos. Las tarifas varían por región, tipo y condiciones del laboratorio. **No se fijan precios ni instancia hasta comprobar la oferta real.**
+Cada estudiante dispone de **hasta USD 50** para el semestre según AWS Academy. No interpretar el crédito como USD 50 disponibles exclusivamente para EC2: EBS, direcciones IPv4 públicas, transferencias y otros recursos pueden generar cargos. Las tarifas varían por región, tipo y condiciones del laboratorio. **Configuración ya probada:** `t2.large` (2 vCPU, 8 GiB RAM) y 99 GiB EBS en Ubuntu 24.04. Esto no demuestra que el crédito alcance para las 18 semanas: comprobar tarifas y disponibilidad efectivas del laboratorio antes de adoptar la configuración para cada estudiante.
 
 Para planificación, **72 horas de clase** son el mínimo presencial de las semanas 1–18, pero el uso real incluye Semana 0 y práctica autónoma. Antes de elegir EC2, estimar:
 
