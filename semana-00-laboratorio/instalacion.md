@@ -1,6 +1,6 @@
 # Instalación completa en Ubuntu Server 24.04 LTS
 
-**Dónde ejecutar:** todos los comandos de esta página se ejecutan **dentro de la terminal SSH de EC2**, salvo que se indique lo contrario. No ejecutar scripts de Internet como root sin revisarlos. Se requiere acceso sudo y conexión a repositorios oficiales. El docente debe autorizar recursos antes de instalar modelos.
+**Dónde ejecutar:** todos los comandos de esta página se ejecutan **dentro de la terminal SSH de EC2**, salvo que se indique lo contrario. No ejecutar scripts de Internet como root sin revisarlos. Se requiere acceso sudo y conexión a repositorios oficiales. El laboratorio utiliza la configuración indicada en la [guía autónoma](guia-paso-a-paso.md).
 
 ## A. Diagnóstico, actualización y herramientas base
 
@@ -120,7 +120,7 @@ sudo docker compose config --quiet
 
 El script genera `.env` y `db/init.local.sql` (ambos ignorados por Git). **Nunca publicar esos archivos**. El SQL inicializa dos esquemas y datos sintéticos. MySQL se ejecuta dentro de Docker; el host lo expone solo en `127.0.0.1:3307`.
 
-**Prueba de despliegue, cuando el docente autorice recursos y la infraestructura esté validada:**
+**Despliegue y prueba de los sistemas empresariales:**
 
 ```bash
 sudo docker compose up -d --build
@@ -144,14 +144,14 @@ sudo docker compose start
 
 No ejecutar `sudo docker compose down -v`: elimina los volúmenes y datos. Si el volumen ya existe, modificar `db/init.sql` no vuelve a inicializarlo.
 
-## E. Ollama: instalar, pero no descargar modelos sin autorización
+## E. Ollama: instalación y modelo del laboratorio
 
 **Advertencia de recursos:** Ollama necesita RAM y espacio de disco adicionales. La instalación del binario no demuestra que la inferencia sea viable. Confirmar primero arquitectura con `uname -m` y revisar [instalación oficial](https://docs.ollama.com/linux). Los comandos siguientes usan el instalador oficial; **inspeccionar antes de ejecutar**.
 
 ```bash
 curl -fsSL https://ollama.com/install.sh -o /tmp/ollama-install.sh
 less /tmp/ollama-install.sh
-# Tras revisión y autorización docente:
+# Tras revisar el instalador:
 sh /tmp/ollama-install.sh
 ollama --version
 sudo systemctl status ollama --no-pager || true
@@ -174,7 +174,7 @@ sudo systemctl restart ollama
 sudo ss -lntp | grep ':11434' || true
 ```
 
-**Modelo de ejemplo, sujeto a autorización docente:** `qwen2.5:1.5b`. Ejecutar lo siguiente únicamente si el docente autoriza este modelo y la capacidad de la instancia:
+**Modelo utilizado en el laboratorio:** `qwen2.5:1.5b`. Ejecutar:
 
 ```bash
 ollama pull qwen2.5:1.5b
@@ -280,4 +280,4 @@ df -h /
 free -h
 ```
 
-Registrar versiones de Python, Git, PHP, Docker/Compose, Ollama y Node/n8n; para MySQL registrar la versión de la imagen Docker; distinguir claramente `instalado`, `probado`, `no ejecutado por falta de recursos` y `pendiente de autorización`. Al salir, **detener EC2 desde la consola AWS**. No confundir `sudo shutdown` con la comprobación del estado AWS; confirmar `Stopped` en consola.
+Registrar versiones de Python, Git, PHP, Docker/Compose, Ollama y Node/n8n; para MySQL registrar la versión de la imagen Docker; distinguir claramente `instalado`, `probado` y `pendiente por error`. Al salir, **detener EC2 desde la consola AWS**. No confundir `sudo shutdown` con la comprobación del estado AWS; confirmar `Stopped` en consola.
