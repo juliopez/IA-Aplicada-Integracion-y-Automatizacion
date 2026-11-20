@@ -85,6 +85,12 @@ El curso utilizará **AWS Academy Learner Lab**, con **una instancia Amazon EC2 
 
 La instalación, verificación, recuperación y detención de la infraestructura se desarrollan en la **[Semana 0 — Laboratorio AWS Academy](semana-00-laboratorio/README.md)**, actividad preparatoria de cuatro horas adicionales a las 72 horas del curso.
 
+### Sistemas empresariales de referencia (caso transversal)
+
+El caso **Mesa de Ayuda Inteligente** utiliza dos aplicaciones preconstruidas: una **mesa de ayuda** para tickets y una **plataforma académica** con usuarios, cuentas y servicios ficticios. Ambas tienen interfaz web, API REST y datos persistentes en MySQL. Se despliegan juntas mediante **Docker Compose** en la EC2 individual; el agente Python, la integración PHP/Ollama y n8n se desarrollan **directamente en Ubuntu** y consumen sus APIs HTTP.
+
+**[Código, arquitectura y comandos de despliegue](infraestructura-empresa/README.md)**. Este entorno está en fase de implementación y requiere validación de extremo a extremo antes de entregarlo a estudiantes. La Semana 0 se ajustará después de esa validación.
+
 ### Organización prevista del repositorio
 
 ```text
