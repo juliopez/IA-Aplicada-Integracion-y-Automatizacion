@@ -31,6 +31,8 @@
 
 ## Paso 2. Preparar la llave y conectarte
 
+### Alternativa: Linux, macOS o WSL
+
 **COMPUTADOR PERSONAL — terminal Linux, macOS o WSL.**
 
 Si el archivo descargado se llama, por ejemplo, `mi-llave.pem` y está en `Descargas`:
@@ -48,6 +50,31 @@ Reemplaza `IP_PUBLICA_EC2` por la IPv4 de tu instancia:
 ```bash
 ssh -i ~/.ssh/ia-aplicada.pem ubuntu@IP_PUBLICA_EC2
 ```
+
+### Alternativa: Windows 10/11 (PowerShell y OpenSSH)
+
+**COMPUTADOR PERSONAL — PowerShell**, no en EC2. Windows no necesita `chmod`; se restringen los permisos de la llave mediante `icacls`.
+
+1. Abre **PowerShell** (sin permisos de administrador). Comprueba que OpenSSH está disponible con `ssh -V`. Si no reconoce `ssh`, instala **OpenSSH Client** desde *Configuración → Sistema → Características opcionales* (la ubicación puede variar según la versión de Windows o las políticas del laboratorio).
+2. Copia el archivo `.pem` descargado desde `Descargas` a tu carpeta personal `.ssh`. Sustituye `mi-llave.pem` por el nombre real:
+
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.ssh" | Out-Null
+Copy-Item "$env:USERPROFILE\Downloads\mi-llave.pem" "$env:USERPROFILE\.ssh\ia-aplicada.pem"
+$llave = "$env:USERPROFILE\.ssh\ia-aplicada.pem"
+icacls.exe "$llave" /inheritance:r
+icacls.exe "$llave" /grant:r "${env:USERDOMAIN}\${env:USERNAME}:R"
+icacls.exe "$llave"
+```
+
+3. Comprueba que la lista de permisos permite leer la llave a **tu usuario**, y no a grupos como `Everyone` o `Users`. Si la política del laboratorio impide modificar los permisos, solicita ayuda al administrador del laboratorio; **no compartas la llave**.
+4. Conecta por SSH, reemplazando `IP_PUBLICA_EC2`:
+
+```powershell
+ssh -i "$env:USERPROFILE\.ssh\ia-aplicada.pem" ubuntu@IP_PUBLICA_EC2
+```
+
+**Importante:** si utilizas Windows con **WSL**, sigue los comandos Linux anteriores **dentro de WSL** y guarda la llave en su sistema de archivos Linux. Los comandos de PowerShell se aplican al cliente OpenSSH nativo de Windows.
 
 Confirma la huella SSH solo si corresponde a tu instancia. A partir de aquí, **permanece conectado a EC2**.
 
@@ -160,7 +187,7 @@ El arranque inicial puede tardar varios minutos mientras se descargan imágenes 
 
 ## Paso 7. Abrir las interfaces en tu navegador
 
-**COMPUTADOR PERSONAL — abre una segunda terminal, sin cerrar la conexión a EC2.**
+**COMPUTADOR PERSONAL — abre una segunda terminal, sin cerrar la conexión a EC2.** En Windows, utiliza PowerShell y sustituye la ruta de llave de los ejemplos por `"$env:USERPROFILE\.ssh\ia-aplicada.pem"`; conserva las opciones `-L` y el destino SSH.
 
 Sustituye `IP_PUBLICA_EC2`:
 
@@ -255,7 +282,7 @@ whoami
 N8N_LISTEN_ADDRESS=127.0.0.1 N8N_PORT=5678 n8n start
 ```
 
-**COMPUTADOR PERSONAL — otra terminal:**
+**COMPUTADOR PERSONAL — otra terminal:** En Windows, utiliza PowerShell y sustituye la ruta de la llave por `"$env:USERPROFILE\.ssh\ia-aplicada.pem"`.
 
 ```bash
 ssh -N -o ExitOnForwardFailure=yes -i ~/.ssh/ia-aplicada.pem \
