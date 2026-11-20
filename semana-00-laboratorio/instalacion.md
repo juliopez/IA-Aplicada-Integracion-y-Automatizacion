@@ -63,8 +63,20 @@ printf '<?php header("Content-Type: text/plain"); echo "PHP OK\\n";' > ~/ia-apli
 cd ~/ia-aplicada/php-prueba
 php -S 127.0.0.1:8083 > /tmp/php-prueba.log 2>&1 &
 PHP_TEST_PID=$!
-curl -fsS http://127.0.0.1:8083/
-kill "$PHP_TEST_PID"
+# Esperar a que el servidor acepte conexiones (máximo ~10 segundos).
+PHP_READY=0
+for intento in $(seq 1 20); do
+  if curl -fsS http://127.0.0.1:8083/; then
+    PHP_READY=1
+    break
+  fi
+  sleep 0.5
+done
+kill "$PHP_TEST_PID" 2>/dev/null || true
+if [ "$PHP_READY" -ne 1 ]; then
+  echo "ERROR: PHP no respondió; revisar /tmp/php-prueba.log" >&2
+  exit 1
+fi
 ```
 
 Esperado: `PHP OK`. El servidor integrado es **solo de desarrollo**, no de producción. No publicar 8083 en el security group.
