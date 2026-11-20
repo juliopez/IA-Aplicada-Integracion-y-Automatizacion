@@ -26,7 +26,7 @@ En **EC2 → Instances → Launch instances**:
 
 No crear IP elástica, balanceador, NAT Gateway ni RDS. No modificar políticas IAM ni crear usuarios con privilegios adicionales.
 
-## 3. Preparar llave en computador personal (Linux/macOS/WSL)
+## 3. Preparar llave en computador personal (Linux/macOS/WSL o Windows)
 
 ```bash
 mkdir -p ~/.ssh
@@ -37,9 +37,34 @@ ls -l ~/.ssh/ia-aplicada.pem
 
 Sustituir `NOMBRE_LLAVE.pem` por el nombre real. En sistemas con carpeta `Downloads`, adaptar la ruta. **No ejecutar estos comandos en EC2**. Si se prefiere conservar la llave en Descargas, no moverla: ejecutar `chmod 600 ~/Descargas/NOMBRE_LLAVE.pem` y utilizar **esa misma ruta** en cada comando `ssh -i`. Comprobar su ubicación con `ls -l ~/Descargas/*.pem ~/Downloads/*.pem ~/.ssh/*.pem 2>/dev/null` (no compartir la llave).
 
+### Alternativa: Windows 10/11 (PowerShell y OpenSSH)
+
+**COMPUTADOR PERSONAL — PowerShell**, no en EC2. Windows no necesita `chmod`; se restringen los permisos de la llave mediante `icacls`.
+
+1. Abre **PowerShell** (sin permisos de administrador). Comprueba que OpenSSH está disponible con `ssh -V`. Si no reconoce `ssh`, instala **OpenSSH Client** desde *Configuración → Sistema → Características opcionales* (la ubicación puede variar según la versión de Windows o las políticas del laboratorio).
+2. Copia el archivo `.pem` descargado desde `Descargas` a tu carpeta personal `.ssh`. Sustituye `mi-llave.pem` por el nombre real:
+
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.ssh" | Out-Null
+Copy-Item "$env:USERPROFILE\Downloads\mi-llave.pem" "$env:USERPROFILE\.ssh\ia-aplicada.pem"
+$llave = "$env:USERPROFILE\.ssh\ia-aplicada.pem"
+icacls.exe "$llave" /inheritance:r
+icacls.exe "$llave" /grant:r "${env:USERDOMAIN}\${env:USERNAME}:R"
+icacls.exe "$llave"
+```
+
+3. Comprueba que la lista de permisos permite leer la llave a **tu usuario**, y no a grupos como `Everyone` o `Users`. Si la política del laboratorio impide modificar los permisos, solicita ayuda al administrador del laboratorio; **no compartas la llave**.
+4. Conecta por SSH, reemplazando `IP_PUBLICA_EC2`:
+
+```powershell
+ssh -i "$env:USERPROFILE\.ssh\ia-aplicada.pem" ubuntu@IP_PUBLICA_EC2
+```
+
+**Importante:** si utilizas Windows con **WSL**, sigue los comandos Linux anteriores **dentro de WSL** y guarda la llave en su sistema de archivos Linux. Los comandos de PowerShell se aplican al cliente OpenSSH nativo de Windows.
+
 ## 4. Conectarse por SSH (computador personal)
 
-Desde EC2 → Instance details, copiar la **IP pública actual**. No pegarla en repositorios ni evidencias públicas.
+Desde EC2 → Instance details, copiar la **IP pública actual**. En Windows PowerShell, utilizar la ruta `"$env:USERPROFILE\.ssh\ia-aplicada.pem"` en lugar de `~/.ssh/ia-aplicada.pem`. No pegarla en repositorios ni evidencias públicas.
 
 ```bash
 ssh -i ~/.ssh/ia-aplicada.pem ubuntu@IP_PUBLICA_EC2
@@ -76,7 +101,7 @@ Ejecutar `chmod 600 ~/.ssh/config`; conectarse a `ia-aplicada`. Actualizar `Host
 
 ## 6. Túneles de acceso (desde computador personal)
 
-Ejecutar los túneles **desde el computador personal**, mientras EC2 está encendida. Los dos primeros permiten abrir los sistemas empresariales:
+Ejecutar los túneles **desde el computador personal**, mientras EC2 está encendida. En Windows PowerShell, reemplazar la ruta `~/.ssh/ia-aplicada.pem` por `"$env:USERPROFILE\.ssh\ia-aplicada.pem"` en los comandos siguientes. Los dos primeros permiten abrir los sistemas empresariales:
 
 ```bash
 # Mesa de ayuda y plataforma académica (ambos en un túnel)
