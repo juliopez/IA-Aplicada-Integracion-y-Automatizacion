@@ -1,4 +1,6 @@
-# Inteligencia Artificial Aplicada: Agentes, Integración y Automatización
+# Programa de asignatura
+
+## Inteligencia Artificial Aplicada: Agentes, Integración y Automatización
 
 ## Programa de estudio — propuesta
 
@@ -60,51 +62,17 @@ Cada semana combina fundamentos breves, implementación guiada, práctica autón
 
 ### Evaluación
 
-Se contemplan **tres evaluaciones prácticas integradoras**, al cierre de las semanas 5, 13 y 18, con evidencias de ejecución, código, pruebas y defensa técnica. Las ponderaciones y rúbricas definitivas quedan pendientes de aprobación institucional. Las actividades intermedias aportan retroalimentación formativa.
+Se contemplan **tres evaluaciones prácticas integradoras**, al cierre de las semanas 5, 13 y 18, con evidencias de ejecución, código, pruebas y defensa técnica. Las ponderaciones y rúbricas definitivas quedan pendientes de aprobación institucional. La distribución de calificaciones deberá formalizarse antes de impartir la asignatura. Las actividades intermedias aportan retroalimentación formativa.
 
-### Infraestructura tecnológica propuesta
+### Recursos y condiciones para el aprendizaje
 
-El curso utilizará **AWS Academy Learner Lab**, con **una instancia Amazon EC2 individual por estudiante** y **Ubuntu Server 24.04 LTS**. Cada estudiante administrará su propio entorno Linux, al que accederá desde su computador mediante **SSH** (terminal o VS Code Remote - SSH). La misma instancia servirá para los tres bloques, de modo que las implementaciones puedan desarrollarse y compararse sobre una infraestructura común.
+La asignatura contempla actividades prácticas con Python, Git, Ollama, PHP, MySQL y n8n, utilizando un entorno individual en AWS Academy. Los estudiantes trabajarán con datos ficticios y desarrollarán progresivamente tres productos integradores, considerando seguridad, privacidad, trazabilidad y validación de resultados.
 
-| Elemento | Configuración acordada |
-|---|---|
-| Plataforma | AWS Academy / Amazon EC2 |
-| Asignación | Una instancia individual por estudiante |
-| Sistema operativo | Ubuntu Server 24.04 LTS |
-| Acceso | SSH; túneles SSH para servicios web y APIs locales |
-| Bloque 1: agentes | Python, pip/venv, Git, cliente de API LLM y acceso a las APIs Docker |
-| Bloque 2: IA local | PHP CLI y Ollama `qwen2.5:1.5b` en Ubuntu; MySQL y aplicaciones empresariales en Docker Compose |
-| Bloque 3: flujos | Node.js y n8n en Ubuntu; acceso a las APIs empresariales y MySQL en Docker; correo de laboratorio |
-| Desarrollo y evidencias | Git/GitHub y editor local conectado por SSH |
-| EC2 | **t2.large** (2 vCPU, 8 GiB RAM), arquitectura x86_64 |
-| Almacenamiento | **99 GiB EBS** |
-| Política de uso | EC2 encendida solo durante clases y trabajo práctico; detener al finalizar |
+Como actividad preparatoria adicional, se contempla una **Semana 0 de cuatro horas**, no incluida en las 72 horas de la asignatura, destinada a familiarizarse con el entorno de trabajo y comprobar el acceso a las herramientas.
 
-**Configuración del laboratorio:** Ubuntu 24.04 LTS, EC2 `t2.large`, 99 GiB EBS y modelo local `qwen2.5:1.5b`. Seguir la guía autónoma; no es necesario decidir de nuevo estos parámetros.
+Los procedimientos operativos se mantienen fuera de este programa y pueden consultarse en la [guía autónoma de Semana 0](semana-00-laboratorio/guia-paso-a-paso.md). El [caso transversal de Mesa de Ayuda Inteligente](infraestructura-empresa/README.md) sirve de contexto para las actividades prácticas y las integraciones de las tres unidades.
 
-**Seguridad y operación:** acceso SSH restringido a la IP del estudiante; servicios Docker (8081, 8082 y 3307), Ollama (11434) y n8n (5678) sin exposición pública; uso de túneles SSH, credenciales protegidas, datos sintéticos, consultas autorizadas y aprobación humana antes de enviar correos. El código y las evidencias se versionarán **sin publicar llaves, tokens, contraseñas ni datos privados**. Las conexiones con APIs o correo externos requieren conectividad y controles específicos.
-
-La instalación, verificación, recuperación y detención de la infraestructura se desarrollan en la **[Semana 0 — Guía autónoma](semana-00-laboratorio/guia-paso-a-paso.md)**, actividad preparatoria de cuatro horas adicionales a las 72 horas del curso.
-
-### Sistemas empresariales de referencia (caso transversal)
-
-El caso **Mesa de Ayuda Inteligente** utiliza dos aplicaciones preconstruidas: una **mesa de ayuda** para tickets y una **plataforma académica** con usuarios, cuentas y servicios ficticios. Ambas tienen interfaz web, API REST y datos persistentes en MySQL. Se despliegan juntas mediante **Docker Compose** en la EC2 individual; el agente Python, la integración PHP/Ollama y n8n se desarrollan **directamente en Ubuntu** y consumen sus APIs HTTP.
-
-**[Código, arquitectura y comandos de despliegue](infraestructura-empresa/README.md)**. Las dos aplicaciones y sus APIs fueron probadas en EC2. La integración de los agentes con esas APIs se desarrollará y validará durante el curso.
-
-### Organización prevista del repositorio
-
-```text
-README.md
-semana-00-laboratorio/
-bloque-01-agentes/
-bloque-02-ollama-php-mysql/
-bloque-03-n8n/
-```
-
-Las carpetas de bloques se crearán al desarrollar las clases y sus materiales.
-
-### Referencias técnicas iniciales
+### Bibliografía y recursos de consulta iniciales
 
 - [Ollama — documentación](https://docs.ollama.com/)
 - [n8n — documentación](https://docs.n8n.io/)
