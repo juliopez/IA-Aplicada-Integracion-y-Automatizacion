@@ -3,26 +3,26 @@
 ## Decisiones aprobadas
 
 - Una **instancia EC2 individual** por estudiante, dentro de las posibilidades del laboratorio AWS Academy.
-- Ubuntu Server **24.04 LTS**, arquitectura de CPU compatible con paquetes y binarios elegidos.
+- Ubuntu Server **24.04 LTS**; configuración EC2 probada: **`t2.large` (2 vCPU, 8 GiB RAM), 99 GiB EBS**.
 - Instancia activa **solo** durante clases y práctica.
 - Presupuesto máximo **USD 50 por estudiante durante el semestre**.
 - Herramientas en Ubuntu: Python, Git, PHP CLI, Docker Engine/Compose, Ollama, Node.js y n8n. MySQL y el PHP/Apache de los dos sistemas empresariales se ejecutan dentro de Docker.
 - Semana 0 preparatoria, fuera de las 72 horas curriculares.
 
-## Pendiente de autorización docente (NO adivinar)
+## Configuración probada y aspectos pendientes
 
 | Parámetro | Estado |
 |---|---|
 | Región AWS permitida | Por confirmar en Learner Lab |
-| Tipo/familia EC2 | Pendiente |
-| Arquitectura x86_64 o ARM64 | Depende de la EC2 elegida |
-| Volumen EBS y capacidad | Pendiente |
+| Tipo/familia EC2 | `t2.large`, probado en laboratorio; disponibilidad y costo por estudiante por verificar |
+| Arquitectura x86_64 o ARM64 | x86_64 para `t2.large` |
+| Volumen EBS y capacidad | 99 GiB utilizados en laboratorio; costo semestral por verificar |
 | Modelo Ollama y cuantización | `qwen2.5:1.5b` Q4_K_M probado en EC2 de referencia; adopción general pendiente de decisión docente |
 | Acceso a API LLM externa y credenciales | Pendiente |
 | Cuentas de correo de prueba | Pendiente |
 | Restricciones IAM, servicios y cuotas de AWS Academy | Verificar en cada laboratorio |
 
-**Regla:** si no hay autorización para tipo EC2/volumen, el estudiante **no debe crear recursos de pago por su cuenta**. Realizar la lectura de consola y esperar confirmación.
+**Regla:** utilizar la configuración indicada por el docente y verificar antes que AWS Academy permita crearla y que el saldo disponible sea suficiente. No crear recursos adicionales de pago por cuenta propia.
 
 ## Diagrama de acceso y puertos
 
@@ -50,4 +50,4 @@ Los puertos Docker 8081, 8082 y 3307 se publican únicamente en 127.0.0.1 de EC2
 
 ## Caso transversal
 
-Los dos sistemas de referencia se encuentran en [`infraestructura-empresa/`](../infraestructura-empresa/README.md). Los agentes Python, PHP/Ollama y n8n se ejecutan en Ubuntu y consumen APIs HTTP locales. En Semana 0 solo se preparan y verifican los servicios; la integración funcional de los agentes se realiza durante el curso. El dimensionamiento definitivo para cada estudiante sigue sujeto al presupuesto y la autorización docente.
+Los dos sistemas de referencia se encuentran en [`infraestructura-empresa/`](../infraestructura-empresa/README.md). Los agentes Python, PHP/Ollama y n8n se ejecutan en Ubuntu y consumen APIs HTTP locales. En Semana 0 solo se preparan y verifican los servicios; la integración funcional de los agentes se realiza durante el curso. La configuración técnica utilizada fue `t2.large` con 99 GiB EBS; su adopción general está condicionada al presupuesto y la disponibilidad del laboratorio.
