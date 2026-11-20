@@ -29,12 +29,12 @@ Registrar el saldo en AWS Academy antes y después de cada sesión, teniendo pre
 ## Seguridad mínima obligatoria
 
 1. **SSH:** regla TCP 22 solo desde IP del estudiante (/32). No habilitar `0.0.0.0/0` para SSH.
-2. **Puertos internos:** no abrir 3306, 11434 ni 5678 en el security group. Usar túneles SSH.
+2. **Puertos internos:** no abrir 8081, 8082, 8083, 3307, 11434 ni 5678 en el security group. Usar túneles SSH.
 3. **Llave:** `chmod 600 ~/.ssh/ia-aplicada.pem` y nunca copiar `.pem` a EC2 ni a GitHub.
 4. **Credenciales:** no compartir secretos en capturas, código o `.env` versionados.
 5. **Datos:** usar únicamente registros y correos ficticios.
-6. **Permisos:** no usar usuario root para programar ni exponer MySQL root a PHP.
-7. **Servicios:** no dejar Ollama, MySQL, Apache ni n8n ejecutándose sin necesidad; desactivar arranque automático si corresponde.
+6. **Permisos:** no usar usuario root para programar ni conectar PHP como MySQL root. Usar `sudo docker` solo para administrar contenedores; el grupo `docker` confiere privilegios equivalentes a root.
+7. **Servicios:** no dejar Ollama, los contenedores Docker ni n8n ejecutándose sin necesidad; desactivar arranque automático si corresponde.
 8. **AWS:** no crear servicios adicionales (NAT Gateway, RDS, balanceadores, volúmenes extra, IP elástica) sin aprobación.
 9. **Respaldo:** subir código a GitHub privado/institucional, sin secretos. El disco EBS no sustituye el control de versiones.
 10. **Aislamiento:** cada estudiante utiliza exclusivamente su EC2; no compartir llaves ni credenciales.
@@ -45,18 +45,22 @@ En EC2:
 
 ```bash
 sudo ss -lntp
-sudo systemctl is-enabled apache2 mysql ollama 2>/dev/null || true
-sudo systemctl is-active apache2 mysql ollama 2>/dev/null || true
+sudo systemctl is-enabled ollama docker 2>/dev/null || true
+sudo systemctl is-active ollama docker 2>/dev/null || true
+# Dentro de infraestructura-empresa:
+sudo docker compose ps
 ```
 
-Revisar que servicios sensibles estén en `127.0.0.1` o no estén activos. **Una escucha en 0.0.0.0 no queda justificada por un security group cerrado**: corregir configuración y validar de nuevo.
+Revisar que los puertos publicados por Docker (8081, 8082 y 3307) estén enlazados a `127.0.0.1`; verificar también la configuración de puertos con `sudo docker compose config`. **Una escucha en 0.0.0.0 no queda justificada por un security group cerrado**: corregir configuración y validar de nuevo.
 
 ## Política de apagado
 
 Al finalizar:
 
 ```bash
-sudo systemctl stop apache2 mysql ollama 2>/dev/null || true
+sudo systemctl stop ollama 2>/dev/null || true
+# Desde infraestructura-empresa, si se levantaron los sistemas:
+sudo docker compose stop
 exit
 ```
 
