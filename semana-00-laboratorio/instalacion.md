@@ -174,14 +174,16 @@ sudo systemctl restart ollama
 sudo ss -lntp | grep ':11434' || true
 ```
 
-**Solo cuando el docente indique el modelo y la instancia lo soporte:**
+**Modelo probado en la EC2 de referencia (20-11-2026, t2.large con 8 GiB de RAM):** `qwen2.5:1.5b`. Para reproducir la prueba, siempre que el docente autorice recursos:
 
 ```bash
-# Sustituir NOMBRE_MODELO_AUTORIZADO por el identificador real.
-ollama pull NOMBRE_MODELO_AUTORIZADO
-ollama run NOMBRE_MODELO_AUTORIZADO "Responde únicamente: modelo operativo"
+ollama pull qwen2.5:1.5b
+ollama run qwen2.5:1.5b 'Responde en español: ¿qué es un agente de IA? Utiliza dos frases.'
+ollama show qwen2.5:1.5b
 ollama list
 ```
+
+En `ollama show` comprobar que **Capabilities** incluya `tools`. Esto acredita capacidad declarada, pero **no** demuestra una llamada funcional. Ejecutar además la prueba V08b documentada en [validacion.md](validacion.md), que comprueba `message.tool_calls[0].function.name == "consultar_tickets"`. En la EC2 de referencia la primera consulta devolvió `content` vacío sin `tool_calls`; una segunda consulta explícita con `temperature: 0` sí seleccionó la función. Registrar ambos resultados sin afirmar que se ejecutó la API.
 
 No ejecutar las líneas con el marcador literal. Detener el servicio para ahorrar recursos (detener EC2 es lo que evita horas de cómputo):
 
