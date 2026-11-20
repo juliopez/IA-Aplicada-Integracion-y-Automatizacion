@@ -6,7 +6,7 @@
 - Ubuntu Server **24.04 LTS**, arquitectura de CPU compatible con paquetes y binarios elegidos.
 - Instancia activa **solo** durante clases y práctica.
 - Presupuesto máximo **USD 50 por estudiante durante el semestre**.
-- Herramientas: Python, Git, Apache/PHP, MySQL, Ollama, Node.js, n8n.
+- Herramientas en Ubuntu: Python, Git, PHP CLI, Docker Engine/Compose, Ollama, Node.js y n8n. MySQL y el PHP/Apache de los dos sistemas empresariales se ejecutan dentro de Docker.
 - Semana 0 preparatoria, fuera de las 72 horas curriculares.
 
 ## Pendiente de autorización docente (NO adivinar)
@@ -29,11 +29,13 @@
 ```text
 [Estudiante] --SSH 22 desde su IP--> [EC2 Ubuntu]
    |                                       |
-   +-- localhost:8080 --túnel--> Apache 127.0.0.1:80
+   +-- localhost:8081 --túnel--> Mesa de ayuda Docker 127.0.0.1:8081
+   +-- localhost:8082 --túnel--> Sistema académico Docker 127.0.0.1:8082
+   +-- localhost:8083 --túnel--> PHP de desarrollo 127.0.0.1:8083
    +-- localhost:5678 --túnel--> n8n 127.0.0.1:5678
    +-- localhost:11434 -túnel-> Ollama 127.0.0.1:11434
                                            |
-                                   MySQL 127.0.0.1:3306
+                                   MySQL Docker 127.0.0.1:3307
 ```
 
 La IP pública puede **cambiar** tras detener/iniciar EC2. Los túneles se establecen desde el computador del estudiante, no desde EC2. Una IP pública asignada puede generar cargos aun con la instancia en marcha; revisar costos del laboratorio.
@@ -44,4 +46,8 @@ El volumen raíz EBS persiste al **detener** la instancia, pero puede perderse a
 
 ## Servicios y exposición
 
-Apache puede probarse únicamente por túnel SSH; MySQL y Ollama deben escuchar en loopback. n8n se ejecutará por defecto en loopback y se accederá por túnel. No crear reglas públicas 80/443/3306/5678/11434 para este laboratorio. No instalar Docker como requisito: se prioriza una configuración de administración sencilla.
+Los puertos Docker 8081, 8082 y 3307 se publican únicamente en 127.0.0.1 de EC2. Ollama y n8n también deben escuchar en loopback. El PHP que desarrolla el estudiante puede utilizar `php -S 127.0.0.1:8083`. Acceso web por túneles SSH. No crear reglas públicas para 80/443/8081/8082/8083/3307/5678/11434. Docker Compose es ahora requisito para los sistemas empresariales. No instalar Apache ni MySQL Server directamente en Ubuntu.
+
+## Caso transversal
+
+Los dos sistemas de referencia se encuentran en [`infraestructura-empresa/`](../infraestructura-empresa/README.md). Los agentes Python, PHP/Ollama y n8n se ejecutan en Ubuntu y consumen APIs HTTP locales. **Las aplicaciones Docker aún no han superado una prueba de integración en EC2**; el dimensionamiento y el modelo Ollama siguen pendientes.
