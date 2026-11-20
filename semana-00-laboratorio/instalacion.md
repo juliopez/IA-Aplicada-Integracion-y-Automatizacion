@@ -191,48 +191,89 @@ No ejecutar las líneas con el marcador literal. Detener el servicio para ahorra
 sudo systemctl disable --now ollama
 ```
 
-## F. Node.js LTS y n8n
+## F. Node.js 22 y n8n como servicio systemd (validado en EC2)
 
-La versión de Node compatible con n8n **puede cambiar**. Antes de instalar, verificar el rango admitido en [requisitos oficiales de n8n](https://docs.n8n.io/hosting/installation/npm/). La siguiente instalación usa **Node.js 22.x** como base propuesta, sujeta a verificación de compatibilidad en el momento del laboratorio.
+**Prueba de referencia: 20-11-2026, Ubuntu 24.04, Node.js v22.23.5, npm 10.9.9 y n8n 2.35.7.** Verificar la compatibilidad vigente en [documentación oficial de n8n](https://docs.n8n.io/hosting/installation/npm/) antes de reproducir; no fijar estas versiones como requisito universal.
 
 ```bash
 curl -fsSL https://deb.nodesource.com/setup_22.x -o /tmp/nodesource-setup.sh
 less /tmp/nodesource-setup.sh
-# Tras revisión del script:
+# Después de revisar el script:
 sudo -E bash /tmp/nodesource-setup.sh
 sudo apt install -y nodejs
 node --version
 npm --version
-```
-
-Instalar n8n **solo si la versión de Node está dentro del rango oficial**:
-
-```bash
 sudo npm install -g n8n
 n8n --version
+which n8n
+whoami
 ```
 
-Iniciar una sesión **de prueba**, no un servicio público:
+En la EC2 probada, `which n8n` devolvió `/usr/bin/n8n` y `whoami` devolvió `ubuntu`. **Comprobar ambas rutas antes de crear el servicio**; si son distintas, adaptar `ExecStart`, `User` y `HOME`. Las advertencias `npm WARN deprecated` no impidieron la instalación, pero deben revisarse al actualizar.
+
+### Primera apertura y creación de cuenta
+
+Para una primera prueba, ejecutar temporalmente `n8n start` como usuario `ubuntu`, con escucha restringida a loopback:
 
 ```bash
-mkdir -p ~/ia-aplicada/n8n-data
-export N8N_USER_FOLDER="$HOME/ia-aplicada/n8n-data"
-export N8N_LISTEN_ADDRESS=127.0.0.1
-export N8N_PORT=5678
-export N8N_DIAGNOSTICS_ENABLED=false
-export N8N_PERSONALIZATION_ENABLED=false
-n8n start
+N8N_LISTEN_ADDRESS=127.0.0.1 N8N_PORT=5678 n8n start
 ```
 
-Este proceso **ocupa la terminal**. En el computador personal, abrir túnel SSH para 5678 y acceder a `http://localhost:5678`. Crear usuario propietario de laboratorio si la versión lo solicita; **no** usar contraseñas reutilizadas. Para terminar: Ctrl+C. No instalar n8n como servicio de inicio automático en Semana 0. No publicar 5678 ni guardar credenciales en Git.
+Desde el computador personal, crear el túnel SSH del puerto 5678 descrito en [aws-ec2.md](aws-ec2.md), visitar `http://localhost:5678` y configurar la cuenta propietaria con contraseña exclusiva. La personalización y la solicitud de clave gratuita son opcionales. **Detener la ejecución manual con Ctrl+C antes de habilitar systemd.** No definir un `N8N_USER_FOLDER` alternativo si luego se utilizará la configuración por defecto: la cuenta y base de datos local quedan bajo `/home/ubuntu/.n8n`.
 
-**Nota:** para uso posterior por túnel, la configuración persistente de n8n y la integración de correo se realizarán en el bloque 3. El laboratorio solo acredita instalación y acceso local.
+### Servicio persistente en Ubuntu
+
+El servicio arranca con la EC2 y se reinicia si falla; no necesita mantener abierta una terminal. Se conserva la cuenta creada por el usuario `ubuntu`.
+
+```bash
+sudo tee /etc/systemd/system/n8n.service > /dev/null <<'EOF'
+[Unit]
+Description=n8n - Automatizacion de flujos IA
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu
+Environment=HOME=/home/ubuntu
+Environment=N8N_LISTEN_ADDRESS=127.0.0.1
+Environment=N8N_PORT=5678
+Environment=N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+ExecStart=/usr/bin/n8n start
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable --now n8n
+sleep 10
+sudo systemctl status n8n --no-pager
+curl -s -o /dev/null -w 'HTTP %{http_code}\n' http://127.0.0.1:5678/
+```
+
+**Criterio de aprobación:** `Active: active (running)`, `enabled` y `HTTP 200`, sin reinicios repetidos. Una respuesta HTTP 200 por sí sola no demuestra que sea la instancia administrada por systemd: puede provenir de una ejecución manual todavía activa.
+
+**Incidente reproducido y resuelto (20-11-2026):** el servicio entró en `activating (auto-restart)` y `status=1/FAILURE` porque otra instancia de n8n ocupaba el puerto 5678. El registro `journalctl` mostró `n8n's port 5678 is already in use`. Se detuvo la instancia manual con Ctrl+C y se ejecutó `sudo systemctl restart n8n`; el servicio pasó a `active (running)`, mostró `Editor is now accessible via: http://localhost:5678` y mantuvo la versión 2.35.7. El aviso `Unknown credential name confluenceCloudOAuth2Api` siguió apareciendo, pero no fue la causa de ese fallo.
+
+```bash
+sudo journalctl -u n8n -n 50 --no-pager
+sudo ss -lntp | grep ':5678' || true
+sudo systemctl is-enabled n8n
+sudo systemctl is-active n8n
+```
+
+Para liberar RAM sin perder la configuración, utilizar `sudo systemctl stop n8n`; para reanudar, `sudo systemctl start n8n`. `enable` mantiene el inicio automático cuando vuelva a arrancar EC2. No exponer el puerto 5678 a Internet.
 
 ## G. Estado final y ahorro de recursos
 
 ```bash
-sudo systemctl disable --now ollama 2>/dev/null || true
-sudo systemctl is-active ollama || true
+sudo systemctl stop ollama 2>/dev/null || true
+sudo systemctl stop n8n 2>/dev/null || true
+sudo systemctl is-active ollama n8n || true
 # Desde la carpeta infraestructura-empresa, si los contenedores están activos:
 sudo docker compose stop
 df -h /
