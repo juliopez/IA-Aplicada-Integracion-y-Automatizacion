@@ -8,13 +8,13 @@
 | V02 | Recursos | `free -h; df -h /` | RAM/disco registrados |
 | V03 | Python | `python3 -m venv /tmp/ia-venv` | Entorno creado |
 | V04 | Git | `git --version` | Versión informada |
-| V05 | Apache | `sudo systemctl start apache2; curl -I http://127.0.0.1/` | Respuesta HTTP |
+| V05 | Docker | `sudo docker version; sudo docker compose version` | Cliente, daemon y plugin disponibles |
 | V06 | PHP | `php -v` | Versión disponible |
-| V07 | MySQL | `sudo systemctl start mysql; sudo mysql -e 'SELECT 1;'` | Consulta correcta |
+| V07 | Sistemas empresariales | `sudo docker compose ps; bash probar.sh` (en `infraestructura-empresa/`) | Dos APIs, MySQL y operaciones verificadas; **pendiente hasta ejecutar** |
 | V08 | Ollama | `ollama --version` | Versión disponible; inferencia pendiente si no autorizada |
 | V09 | Node | `node --version; npm --version` | Versiones disponibles |
 | V10 | n8n | `n8n --version` | Versión disponible si se instaló |
-| V11 | Seguridad | `sudo ss -lntp` | MySQL/Ollama/n8n sin exposición pública |
+| V11 | Seguridad | `sudo ss -lntp` | 8081, 8082 y 3307 solo en loopback; Ollama/n8n sin exposición pública |
 | V12 | Presupuesto | AWS Academy/EC2 | Crédito revisado; EC2 detenida al finalizar |
 
 ```bash
@@ -27,7 +27,8 @@ mkdir -p ~/ia-aplicada/semana-00/evidencias
   python3 --version
   git --version
   php -v | head -n 1
-  mysql --version
+  sudo docker --version
+  sudo docker compose version
   node --version
   npm --version
   command -v ollama && ollama --version || true
@@ -92,5 +93,5 @@ sudo journalctl -u mysql -n 40 --no-pager
 2. Iniciar **la misma** EC2 (`Start`, nunca `Launch` de otra).
 3. Consultar IP pública actual y actualizar `~/.ssh/config`.
 4. Conectarse y verificar `df -h /` y archivos `~/ia-aplicada`.
-5. Iniciar **solo** el servicio necesario: `sudo systemctl start apache2`, `sudo systemctl start mysql` o `sudo systemctl start ollama`, según actividad.
-6. Al terminar, detener servicios y luego EC2; confirmar `Stopped`.
+5. Iniciar **solo** lo necesario: en `infraestructura-empresa/`, `sudo docker compose start` (o `sudo docker compose up -d --build` en el primer despliegue); para Ollama, `sudo systemctl start ollama`; para n8n, iniciar la sesión según la guía.
+6. Al terminar, `sudo docker compose stop` desde la carpeta del proyecto, detener Ollama/n8n si siguen activos y luego EC2; confirmar `Stopped`.
