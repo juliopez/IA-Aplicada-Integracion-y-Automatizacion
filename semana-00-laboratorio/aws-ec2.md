@@ -7,8 +7,8 @@ Consultar [video del docente: acceso desde AWS Academy](https://youtu.be/_bdFuZe
 1. Ingresar a AWS Academy con la cuenta institucional habilitada.
 2. Abrir el laboratorio asignado y **iniciarlo** según la interfaz disponible.
 3. Acceder a la consola AWS **desde el laboratorio**, no desde una cuenta personal de pago.
-4. Registrar región habilitada, saldo/crédito mostrado, restricciones de EC2 y horario de expiración del laboratorio.
-5. Si el laboratorio está deshabilitado o no hay saldo, **detener el procedimiento** y consultar al docente.
+4. Registrar la región habilitada y comprobar que el laboratorio permite crear una instancia `t2.large`.
+5. Si el laboratorio está deshabilitado o no permite crear la instancia indicada, detener el procedimiento y consultar al docente.
 
 ## 2. Crear EC2
 
@@ -18,11 +18,11 @@ En **EC2 → Instances → Launch instances**:
 
 1. Nombre: `ia-aplicada-estudiante` (sin nombres personales ni RUT).
 2. AMI: **Ubuntu Server 24.04 LTS**, preferentemente imagen oficial publicada por Canonical. Verificar arquitectura.
-3. **Instance type:** `t2.large` (2 vCPU, 8 GiB RAM), configuración utilizada en la prueba docente. Confirmar disponibilidad y crédito antes de lanzarla.
+3. **Instance type:** `t2.large` (2 vCPU, 8 GiB RAM), configuración utilizada en la prueba docente. Confirmar que aparece como disponible en el laboratorio.
 4. **Key pair:** crear llave SSH (RSA o ED25519 si el entorno lo admite), formato `.pem` para OpenSSH; descargarla **una sola vez** y protegerla.
 5. **Network/security group:** entrada TCP 22 **solo desde la IP pública actual del estudiante (/32)**; no usar `0.0.0.0/0`. Si la IP cambia, actualizar la regla.
-6. **Storage:** configurar **99 GiB EBS**, como en la prueba docente; verificar tipo, costo y autorización del laboratorio. No activar volúmenes adicionales.
-7. Revisar resumen de cargos y lanzar **una sola instancia**.
+6. **Storage:** configurar **99 GiB EBS**, como en la prueba docente; verificar que el laboratorio permite esta configuración. No activar volúmenes adicionales.
+7. Revisar la configuración y lanzar **una sola instancia**.
 
 No crear IP elástica, balanceador, NAT Gateway ni RDS. No modificar políticas IAM ni crear usuarios con privilegios adicionales.
 
@@ -108,4 +108,4 @@ Abrir `http://localhost:8081` (tickets), `http://localhost:8082` (académico), `
 
 ## 7. Finalizar
 
-Al terminar la sesión, salir de SSH con `exit`, ir a EC2 → Instances → seleccionar instancia → **Instance state → Stop instance**. Esperar estado **Stopped**. **No seleccionar Terminate**. Revisar que EBS y otros cargos persisten aunque EC2 esté detenida.
+Al terminar la sesión, salir de SSH con `exit`, ir a EC2 → Instances → seleccionar instancia → **Instance state → Stop instance**. Esperar estado **Stopped**. **No seleccionar Terminate**. El volumen EBS permanece asociado a la instancia detenida.
