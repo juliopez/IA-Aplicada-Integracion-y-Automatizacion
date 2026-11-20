@@ -18,10 +18,10 @@ En **EC2 → Instances → Launch instances**:
 
 1. Nombre: `ia-aplicada-estudiante` (sin nombres personales ni RUT).
 2. AMI: **Ubuntu Server 24.04 LTS**, preferentemente imagen oficial publicada por Canonical. Verificar arquitectura.
-3. **Instance type:** seleccionar **solo** el autorizado por el docente; está pendiente de definición.
+3. **Instance type:** `t2.large` (2 vCPU, 8 GiB RAM), configuración utilizada en la prueba docente. Confirmar disponibilidad y crédito antes de lanzarla.
 4. **Key pair:** crear llave SSH (RSA o ED25519 si el entorno lo admite), formato `.pem` para OpenSSH; descargarla **una sola vez** y protegerla.
 5. **Network/security group:** entrada TCP 22 **solo desde la IP pública actual del estudiante (/32)**; no usar `0.0.0.0/0`. Si la IP cambia, actualizar la regla.
-6. **Storage:** volumen EBS de tamaño **autorizado**; revisar tipo y costo. No activar volúmenes adicionales.
+6. **Storage:** configurar **99 GiB EBS**, como en la prueba docente; verificar tipo, costo y autorización del laboratorio. No activar volúmenes adicionales.
 7. Revisar resumen de cargos y lanzar **una sola instancia**.
 
 No crear IP elástica, balanceador, NAT Gateway ni RDS. No modificar políticas IAM ni crear usuarios con privilegios adicionales.
