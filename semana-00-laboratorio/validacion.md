@@ -71,7 +71,7 @@ curl -fsS http://127.0.0.1:11434/api/chat \
 
 **Criterio de aprobación:** dentro de `message.tool_calls` debe existir una entrada cuya `function.name` sea `consultar_tickets` y cuyos `arguments` sean `{}`. `content` puede estar vacío: no es fallo si aparece la llamada a herramienta. **No confundir** el objeto `tools` enviado en la petición con el objeto `tool_calls` recibido en la respuesta.
 
-**Evidencia de referencia, 20-11-2026:** primera prueba sin instrucción explícita: respuesta vacía y sin `tool_calls` (no aprobada). Segunda prueba con instrucción explícita y temperatura 0: `tool_calls` con `consultar_tickets` y `arguments: {}` (aprobada). El modelo puede variar su comportamiento entre solicitudes; esta prueba no acredita consistencia estadística ni ejecución de la API empresarial. La ejecución efectiva se evaluará posteriormente al integrar el agente con las aplicaciones Docker.
+**Resultado esperado:** la respuesta incluye una llamada a `consultar_tickets` con argumentos vacíos. Si no aparece, registrar la salida y consultar al docente; no declarar aprobada la prueba.
 
 ## Registro de pruebas
 
@@ -114,7 +114,7 @@ sudo systemctl status n8n --no-pager
 sudo journalctl -u n8n -n 50 --no-pager
 sudo ss -lntp | grep ':5678' || true
 ```
-Si el registro indica `n8n's port 5678 is already in use`, **detener primero con Ctrl+C la instancia manual de n8n**, si sigue abierta, y después ejecutar `sudo systemctl restart n8n`. Verificar `active (running)` y HTTP 200; no dar por aprobado un estado `activating` ni solo la respuesta HTTP. El aviso sobre `confluenceCloudOAuth2Api` se observó en la referencia sin impedir el arranque final. Si persiste el error, revisar proceso dueño del puerto antes de detenerlo. No publicar el puerto para resolverlo.
+Si el registro indica `n8n's port 5678 is already in use`, **detener primero con Ctrl+C la instancia manual de n8n**, si sigue abierta, y después ejecutar `sudo systemctl restart n8n`. Verificar `active (running)` y HTTP 200; no dar por aprobado un estado `activating` ni solo la respuesta HTTP. Un aviso sobre credenciales no implica necesariamente que el servicio haya fallado. Revisar el estado real y el proceso que ocupa el puerto antes de detenerlo. No publicar el puerto para resolverlo.
 
 **MySQL de Docker no inicia**  
 Desde `infraestructura-empresa/`:
@@ -134,7 +134,7 @@ sudo docker compose ps
 bash probar.sh
 ```
 
-`down -v` **elimina definitivamente las bases de datos del proyecto**. Nunca utilizarlo como solución general para instalaciones con datos. La prueba de referencia EC2 del 20-11-2026 requirió esta recuperación después de un fallo de permisos; posteriormente MySQL quedó saludable y `probar.sh` fue satisfactorio.
+`down -v` **elimina definitivamente las bases de datos del proyecto**. Nunca utilizarlo como solución general para instalaciones con datos. Esta recuperación es excepcional y debe realizarse solo con confirmación del docente.
 
 **Túnel SSH: llave inexistente o puerto local ocupado**  
 Verificar la ruta real de `.pem` en el computador personal y usarla en `ssh -i`; ejecutar `chmod 600` sobre esa llave. Si `bind [127.0.0.1]:8081: Address already in use`, detener el intento con Ctrl+C y utilizar `-L 18081:127.0.0.1:8081 -L 18082:127.0.0.1:8082` según `aws-ec2.md`. Verificar en el navegador `http://localhost:18081` y `http://localhost:18082`.
