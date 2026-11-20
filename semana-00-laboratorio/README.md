@@ -1,6 +1,6 @@
 # Semana 0 — Instalación autónoma del laboratorio AWS
 
-**Prerrequisito práctico del curso**, fuera de las 72 horas de las clases 1–18.
+**Actividad preparatoria de apoyo**, fuera de las 72 horas de las clases 1–18. Consultar el [programa de asignatura](../README.md) para los resultados de aprendizaje, unidades y evaluación.
 
 ## Empieza aquí
 
