@@ -12,7 +12,8 @@
 | V06 | PHP | `php -v` | Versión disponible |
 | V07 | Sistemas empresariales | `sudo docker compose ps; bash probar.sh` (en `infraestructura-empresa/`) | Dos APIs, MySQL y operaciones verificadas en prueba de referencia EC2 (20-11-2026); repetir por estudiante |
 | V07b | Interfaces gráficas | Túnel SSH y navegador local para tickets y académico | Ambas interfaces y registros visibles; comprobado en EC2 de referencia (20-11-2026) |
-| V08 | Ollama | `ollama --version` | Versión disponible; inferencia pendiente si no autorizada |
+| V08 | Ollama e inferencia | `ollama --version; ollama show qwen2.5:1.5b` y consulta de texto en `instalacion.md` | Servicio activo, respuesta de texto y capacidad `tools` declarada |
+| V08b | Selección real de herramienta | Solicitud a `/api/chat` (comando siguiente) | `message.tool_calls[0].function.name` es `consultar_tickets`; no implica ejecutar la API |
 | V09 | Node | `node --version; npm --version` | Versiones disponibles |
 | V10 | n8n | `n8n --version` | Versión disponible si se instaló |
 | V11 | Seguridad | `sudo ss -lntp` | 8081, 8082 y 3307 solo en loopback; Ollama/n8n sin exposición pública |
@@ -40,6 +41,37 @@ mkdir -p ~/ia-aplicada/semana-00/evidencias
 ```
 
 **Antes de publicar evidencias**, revisar y eliminar IP, nombres de host identificables, tokens, usuarios personales y cualquier secreto. Las capturas de AWS deben ocultar datos sensibles.
+
+## V08b — Prueba funcional de selección de herramientas (Ollama)
+
+Ejecutar **en la EC2** después de descargar `qwen2.5:1.5b` y comprobar que Ollama esté activo. La herramienta declarada es simulada: esta prueba **no** consulta ni modifica los tickets reales.
+
+```bash
+curl -fsS http://127.0.0.1:11434/api/chat \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "qwen2.5:1.5b",
+    "stream": false,
+    "messages": [
+      {"role": "user", "content": "Consulta los tickets registrados utilizando la herramienta consultar_tickets."}
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "consultar_tickets",
+          "description": "Obtiene la lista de tickets de la mesa de ayuda.",
+          "parameters": {"type": "object", "properties": {}}
+        }
+      }
+    ],
+    "options": {"temperature": 0}
+  }' | python3 -m json.tool
+```
+
+**Criterio de aprobación:** dentro de `message.tool_calls` debe existir una entrada cuya `function.name` sea `consultar_tickets` y cuyos `arguments` sean `{}`. `content` puede estar vacío: no es fallo si aparece la llamada a herramienta. **No confundir** el objeto `tools` enviado en la petición con el objeto `tool_calls` recibido en la respuesta.
+
+**Evidencia de referencia, 20-11-2026:** primera prueba sin instrucción explícita: respuesta vacía y sin `tool_calls` (no aprobada). Segunda prueba con instrucción explícita y temperatura 0: `tool_calls` con `consultar_tickets` y `arguments: {}` (aprobada). El modelo puede variar su comportamiento entre solicitudes; esta prueba no acredita consistencia estadística ni ejecución de la API empresarial. La ejecución efectiva se evaluará posteriormente al integrar el agente con las aplicaciones Docker.
 
 ## Registro de pruebas
 
