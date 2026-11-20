@@ -81,11 +81,14 @@ sudo ss -lntp | grep ':5678' || true
 ```
 Verificar compatibilidad Node/n8n y memoria. No publicar el puerto para resolver el problema.
 
-**MySQL no inicia**  
+**MySQL de Docker no inicia**  
+Desde `infraestructura-empresa/`:
 ```bash
-sudo systemctl status mysql --no-pager
-sudo journalctl -u mysql -n 40 --no-pager
+sudo docker compose ps
+sudo docker compose logs --tail=60 db
+sudo docker compose config --quiet
 ```
+Si aparece `01-init.sql: Permission denied`, comprobar permisos con `ls -l db/init.local.sql` y ejecutar la versión actualizada de `bash preparar.sh`. El SQL debe ser legible para el usuario MySQL dentro del contenedor. **No borrar el volumen automáticamente:** un arranque fallido puede haber dejado una inicialización parcial; verificar antes de cualquier reinicialización.
 
 ## Reanudación en otra sesión
 
