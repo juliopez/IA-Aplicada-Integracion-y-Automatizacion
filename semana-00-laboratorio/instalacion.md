@@ -132,7 +132,7 @@ bash probar.sh
 
 Los frontend se consultan en `http://127.0.0.1:8081` y `http://127.0.0.1:8082` **desde EC2**, o por túneles SSH desde el computador personal. `probar.sh` requiere `jq` (instalado en el tramo A) y crea un ticket de prueba; también cambia una cuenta ficticia a activa. No ejecutarlo sobre datos reales.
 
-**Estado de esta guía:** el código de los sistemas está publicado, pero **no ha sido probado aún con Docker en EC2**. Si la prueba falla, registrar el error y consultar al docente; no dar por aprobada la validación ni borrar volúmenes.
+**Validación de referencia (20-11-2026):** en una EC2 Ubuntu 24.04 se confirmó Docker/MySQL saludable, ambos servicios PHP iniciados, `bash probar.sh` satisfactorio y ambas interfaces accesibles desde un navegador local mediante túneles SSH. La validación corresponde a esta instalación de referencia, no sustituye las pruebas de cada estudiante. Ante fallos, consultar `validacion.md` antes de reinicializar volúmenes.
 
 Para detener los contenedores sin borrar MySQL:
 
