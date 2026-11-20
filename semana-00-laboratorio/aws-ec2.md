@@ -76,11 +76,15 @@ Ejecutar `chmod 600 ~/.ssh/config`; conectarse a `ia-aplicada`. Actualizar `Host
 
 ## 6. Túneles de acceso (desde computador personal)
 
-Ejecutar **cada túnel en una terminal independiente**, mientras EC2 está encendida:
+Ejecutar los túneles **desde el computador personal**, mientras EC2 está encendida. Los dos primeros permiten abrir los sistemas empresariales:
 
 ```bash
-# Apache, cuando esté instalado
-ssh -N -i ~/.ssh/ia-aplicada.pem -L 8080:127.0.0.1:80 ubuntu@IP_PUBLICA_EC2
+# Mesa de ayuda y plataforma académica (ambos en un túnel)
+ssh -N -i ~/.ssh/ia-aplicada.pem \
+  -L 8081:127.0.0.1:8081 -L 8082:127.0.0.1:8082 ubuntu@IP_PUBLICA_EC2
+
+# PHP del estudiante, cuando ejecute php -S 127.0.0.1:8083
+ssh -N -i ~/.ssh/ia-aplicada.pem -L 8083:127.0.0.1:8083 ubuntu@IP_PUBLICA_EC2
 
 # n8n, solo cuando esté iniciado
 ssh -N -i ~/.ssh/ia-aplicada.pem -L 5678:127.0.0.1:5678 ubuntu@IP_PUBLICA_EC2
@@ -89,7 +93,7 @@ ssh -N -i ~/.ssh/ia-aplicada.pem -L 5678:127.0.0.1:5678 ubuntu@IP_PUBLICA_EC2
 ssh -N -i ~/.ssh/ia-aplicada.pem -L 11434:127.0.0.1:11434 ubuntu@IP_PUBLICA_EC2
 ```
 
-Abrir `http://localhost:8080`, `http://localhost:5678` o usar `curl http://localhost:11434/api/tags` en el **computador personal**, según el servicio. Detener cada túnel con Ctrl+C. Si un puerto local ya está ocupado, cambiar el **número izquierdo** del túnel.
+Abrir `http://localhost:8081` (tickets), `http://localhost:8082` (académico), `http://localhost:8083` (PHP del estudiante), `http://localhost:5678` (n8n) o usar `curl http://localhost:11434/api/tags` en el **computador personal**, según el servicio. Detener cada túnel con Ctrl+C. Si un puerto local ya está ocupado, cambiar el **número izquierdo** del túnel.
 
 ## 7. Finalizar
 
