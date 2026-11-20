@@ -5,7 +5,7 @@
 
 ## Objetivo y alcance
 
-Crear una **EC2 individual con Ubuntu Server 24.04 LTS**, acceder por SSH, instalar y verificar el software del semestre, aplicar controles de seguridad y aprender a detener/reiniciar la instancia sin perder el trabajo. **No se define todavía el tipo de EC2, su capacidad, el tamaño de EBS ni el modelo de Ollama:** requieren confirmación docente según catálogo y crédito AWS Academy.
+Crear una **EC2 individual con Ubuntu Server 24.04 LTS**, acceder por SSH, instalar y verificar el software del semestre, aplicar controles de seguridad y aprender a detener/reiniciar la instancia sin perder el trabajo. **Configuración de laboratorio utilizada:** EC2 `t2.large` (2 vCPU, 8 GiB RAM), Ubuntu Server 24.04 LTS y 99 GiB de almacenamiento EBS. El modelo Ollama utilizado en las pruebas fue `qwen2.5:1.5b`; el uso de esta configuración por todos los estudiantes requiere verificar crédito y disponibilidad en AWS Academy.
 
 ### Videos de apoyo del docente
 
@@ -35,7 +35,7 @@ No publicar puertos 8081/8082 (aplicaciones Docker), 3307 (MySQL publicado en lo
 
 | Tramo | Minutos | Resultado verificable |
 |---|---:|---|
-| A. AWS Academy, presupuesto y decisiones pendientes | 25 | Acceso confirmado y hoja de control |
+| A. AWS Academy, presupuesto y configuración de referencia | 25 | Acceso confirmado y hoja de control |
 | B. EC2, llave, SSH y red | 45 | Ubuntu accesible con usuario no root |
 | C. Sistema, Git y Python | 35 | Entorno Python aislado y Git operativos |
 | D. PHP, Docker Engine y Compose | 45 | PHP CLI y Docker Compose disponibles |
@@ -60,7 +60,7 @@ No publicar puertos 8081/8082 (aplicaciones Docker), 3307 (MySQL publicado en lo
 
 ## Entrega individual
 
-En un repositorio **privado** del estudiante o en el medio institucional aprobado, crear `semana-00/evidencias.md` con: región, identificador EC2 **parcialmente oculto**, AMI/versión de Ubuntu, tipo de instancia cuando se autorice, tamaño EBS, versiones instaladas, comandos de verificación, estado de servicios, evidencia de túnel SSH y procedimiento de detención/reinicio. **Nunca** subir archivos `.pem`, contraseñas, tokens, `.env`, IP personal ni capturas con credenciales.
+En un repositorio **privado** del estudiante o en el medio institucional aprobado, crear `semana-00/evidencias.md` con: región, identificador EC2 **parcialmente oculto**, AMI/versión de Ubuntu, tipo de instancia y tamaño EBS, versiones instaladas, comandos de verificación, estado de servicios, evidencia de túnel SSH y procedimiento de detención/reinicio. **Nunca** subir archivos `.pem`, contraseñas, tokens, `.env`, IP personal ni capturas con credenciales.
 
 ### Criterios de aprobación del laboratorio
 
