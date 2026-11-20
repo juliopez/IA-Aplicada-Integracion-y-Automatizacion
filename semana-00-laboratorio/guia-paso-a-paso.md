@@ -92,7 +92,7 @@ deactivate
 sudo apt install -y php-cli php-mysql php-curl php-mbstring php-xml
 php --version
 mkdir -p ~/ia-aplicada/php-prueba
-printf '%s\n' '<?php echo "PHP OK\\n";' > ~/ia-aplicada/php-prueba/index.php
+printf '%s\n' '<?php echo "PHP OK", PHP_EOL;' > ~/ia-aplicada/php-prueba/index.php
 php ~/ia-aplicada/php-prueba/index.php
 ```
 
