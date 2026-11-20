@@ -18,9 +18,9 @@ Diseñar, implementar, integrar y evaluar soluciones de inteligencia artificial 
 
 ## Semana 0 — Laboratorio preparatorio AWS Academy
 
-**Actividad adicional previa a las 18 semanas (4 horas, no incluidas en las 72 horas oficiales).** Cada estudiante prepara una EC2 individual con Ubuntu Server 24.04 LTS y las herramientas del semestre, con un máximo de USD 50 de crédito AWS Academy por estudiante. La selección de familia/tamaño EC2, almacenamiento y modelo Ollama queda **pendiente de validación docente**.
+**Actividad adicional previa a las 18 semanas (4 horas, no incluidas en las 72 horas oficiales).** Cada estudiante prepara una EC2 individual con Ubuntu Server 24.04 LTS y las herramientas del semestre, con una configuración ya probada de **EC2 t2.large, 99 GiB EBS y Ollama `qwen2.5:1.5b`**.
 
-**[Abrir laboratorio completo de Semana 0](semana-00-laboratorio/README.md)**: incluye los dos videos del docente sobre acceso a AWS Academy y creación de EC2, comandos de instalación, SSH y túneles, pruebas, recuperación, seguridad y control de costos.
+**[Guía autónoma de Semana 0 — comenzar aquí](semana-00-laboratorio/guia-paso-a-paso.md)**: 13 pasos con comandos, resultados esperados, acceso por SSH, interfaces gráficas, pruebas y recuperación.
 
 ### Unidades y productos integradores
 
@@ -73,23 +73,24 @@ El curso utilizará **AWS Academy Learner Lab**, con **una instancia Amazon EC2 
 | Sistema operativo | Ubuntu Server 24.04 LTS |
 | Acceso | SSH; túneles SSH para servicios web y APIs locales |
 | Bloque 1: agentes | Python, pip/venv, Git, cliente de API LLM y acceso a las APIs Docker |
-| Bloque 2: IA local | PHP CLI y Ollama en Ubuntu; MySQL y aplicaciones empresariales en Docker Compose; modelo LLM por definir |
+| Bloque 2: IA local | PHP CLI y Ollama `qwen2.5:1.5b` en Ubuntu; MySQL y aplicaciones empresariales en Docker Compose |
 | Bloque 3: flujos | Node.js y n8n en Ubuntu; acceso a las APIs empresariales y MySQL en Docker; correo de laboratorio |
 | Desarrollo y evidencias | Git/GitHub y editor local conectado por SSH |
-| Crédito disponible | **USD 50 por estudiante para todo el semestre** |
+| EC2 | **t2.large** (2 vCPU, 8 GiB RAM), arquitectura x86_64 |
+| Almacenamiento | **99 GiB EBS** |
 | Política de uso | EC2 encendida solo durante clases y trabajo práctico; detener al finalizar |
 
-**Decisiones pendientes:** región habilitada en AWS Academy, familia/tamaño de EC2, arquitectura de procesador, RAM, capacidad del volumen EBS y modelo Ollama. Estos parámetros se determinarán después de comprobar las restricciones del laboratorio y el rendimiento de inferencia. **No se presupone que los USD 50 alcancen para cualquier configuración**; EBS y otros recursos pueden seguir generando cargos con EC2 detenida.
+**Configuración del laboratorio:** Ubuntu 24.04 LTS, EC2 `t2.large`, 99 GiB EBS y modelo local `qwen2.5:1.5b`. Seguir la guía autónoma; no es necesario decidir de nuevo estos parámetros.
 
 **Seguridad y operación:** acceso SSH restringido a la IP del estudiante; servicios Docker (8081, 8082 y 3307), Ollama (11434) y n8n (5678) sin exposición pública; uso de túneles SSH, credenciales protegidas, datos sintéticos, consultas autorizadas y aprobación humana antes de enviar correos. El código y las evidencias se versionarán **sin publicar llaves, tokens, contraseñas ni datos privados**. Las conexiones con APIs o correo externos requieren conectividad y controles específicos.
 
-La instalación, verificación, recuperación y detención de la infraestructura se desarrollan en la **[Semana 0 — Laboratorio AWS Academy](semana-00-laboratorio/README.md)**, actividad preparatoria de cuatro horas adicionales a las 72 horas del curso.
+La instalación, verificación, recuperación y detención de la infraestructura se desarrollan en la **[Semana 0 — Guía autónoma](semana-00-laboratorio/guia-paso-a-paso.md)**, actividad preparatoria de cuatro horas adicionales a las 72 horas del curso.
 
 ### Sistemas empresariales de referencia (caso transversal)
 
 El caso **Mesa de Ayuda Inteligente** utiliza dos aplicaciones preconstruidas: una **mesa de ayuda** para tickets y una **plataforma académica** con usuarios, cuentas y servicios ficticios. Ambas tienen interfaz web, API REST y datos persistentes en MySQL. Se despliegan juntas mediante **Docker Compose** en la EC2 individual; el agente Python, la integración PHP/Ollama y n8n se desarrollan **directamente en Ubuntu** y consumen sus APIs HTTP.
 
-**[Código, arquitectura y comandos de despliegue](infraestructura-empresa/README.md)**. Este entorno está en fase de implementación y requiere validación de extremo a extremo antes de entregarlo a estudiantes. La Semana 0 ya incorpora la arquitectura Docker Compose; la validación operativa en EC2 sigue pendiente.
+**[Código, arquitectura y comandos de despliegue](infraestructura-empresa/README.md)**. Las dos aplicaciones y sus APIs fueron probadas en EC2. La integración de los agentes con esas APIs se desarrollará y validará durante el curso.
 
 ### Organización prevista del repositorio
 
