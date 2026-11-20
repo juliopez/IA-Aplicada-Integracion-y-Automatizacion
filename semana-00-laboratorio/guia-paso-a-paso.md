@@ -22,6 +22,12 @@
 10. Copia la **Public IPv4 address** de la instancia. La usarás solo para conectarte; puede cambiar tras detener/iniciar EC2.
 
 **Comprobación:** en EC2 → Instances aparece una sola instancia `Running` con tipo `t2.large`, Ubuntu 24.04 y volumen de 99 GiB.
+**Referencia visual — instancia EC2:**
+
+![Consola de AWS EC2: instancia del laboratorio](imagenes/01-ec2-aws.png)
+
+*Comprueba en tu propia consola el estado y tipo de instancia; la captura es una referencia y puede mostrar datos distintos a los tuyos.*
+
 
 ## Paso 2. Preparar la llave y conectarte
 
@@ -172,7 +178,17 @@ La terminal quedará aparentemente inmóvil: **es normal; el túnel está funcio
 - **Mesa de ayuda:** http://localhost:8081
 - **Sistema académico:** http://localhost:8082
 
-**Comprobación:** ambas páginas muestran sus datos de prueba. Si el puerto local está ocupado, utiliza los puertos alternativos explicados en [acceso SSH y túneles](aws-ec2.md#6-túneles-de-acceso-desde-computador-personal). Para permitir que un compañero pruebe tu sistema, **no compartas tu llave SSH**; coordina con el docente un mecanismo de acceso autorizado.
+**Comprobación:** ambas páginas muestran sus datos de prueba.
+**Referencia visual — mesa de ayuda (puerto 8081):**
+
+![Interfaz web de la mesa de ayuda](imagenes/02-mesa-ayuda.png)
+
+**Referencia visual — sistema académico (puerto 8082):**
+
+![Interfaz web del sistema académico](imagenes/03-sistema-academico.png)
+
+*Ambas interfaces deben abrirse desde tu navegador mediante túnel SSH. Los datos de prueba pueden variar.*
+ Si el puerto local está ocupado, utiliza los puertos alternativos explicados en [acceso SSH y túneles](aws-ec2.md#6-túneles-de-acceso-desde-computador-personal). Para permitir que un compañero pruebe tu sistema, **no compartas tu llave SSH**; coordina con el docente un mecanismo de acceso autorizado.
 
 ## Paso 8. Instalar Ollama y descargar el modelo
 
@@ -195,7 +211,17 @@ ollama run qwen2.5:1.5b 'Responde en español y en dos frases: ¿qué es un agen
 ollama show qwen2.5:1.5b
 ```
 
-**Comprobación:** Ollama responde, el modelo produce texto y `ollama show` muestra la capacidad `tools`. Para comprobar una selección real de herramienta, ejecuta la [prueba V08b](validacion.md#v08b--prueba-funcional-de-selección-de-herramientas-ollama). Esa prueba **no modifica tickets**.
+**Comprobación:** Ollama responde, el modelo produce texto y `ollama show` muestra la capacidad `tools`.
+**Referencia visual — modelo instalado:**
+
+![Verificación del modelo Ollama](imagenes/04-ollama-modelo.png)
+
+**Referencia visual — selección de herramienta:**
+
+![Respuesta de Ollama con llamada a herramienta](imagenes/05-ollama-herramienta.png)
+
+*La segunda captura muestra la selección de una función; no acredita que se haya ejecutado una acción sobre las APIs empresariales.*
+ Para comprobar una selección real de herramienta, ejecuta la [prueba V08b](validacion.md#v08b--prueba-funcional-de-selección-de-herramientas-ollama). Esa prueba **no modifica tickets**.
 
 ## Paso 9. Instalar Node.js y n8n
 
@@ -236,7 +262,15 @@ ssh -N -o ExitOnForwardFailure=yes -i ~/.ssh/ia-aplicada.pem \
   -L 5678:127.0.0.1:5678 ubuntu@IP_PUBLICA_EC2
 ```
 
-En tu navegador abre **http://localhost:5678**, crea la cuenta propietaria con una contraseña segura y completa o salta las pantallas opcionales. Comprueba que puedes acceder a **Workflows**.
+En tu navegador abre **http://localhost:5678**, crea la cuenta propietaria con una contraseña segura y completa o salta las pantallas opcionales.
+**Referencia visual — creación de cuenta:**
+
+![Pantalla de configuración inicial de n8n](imagenes/06-n8n-configuracion.png)
+
+**Referencia visual — editor de automatizaciones:**
+
+![Editor de workflows de n8n](imagenes/07-n8n-editor.png)
+ Comprueba que puedes acceder a **Workflows**.
 
 **IMPORTANTE:** vuelve a la terminal EC2 donde ejecutaste `n8n start` y pulsa **Ctrl+C** para detener la instancia manual. **Debes hacerlo antes del paso 11** para evitar que el puerto 5678 quede ocupado.
 
@@ -275,7 +309,13 @@ sudo systemctl is-active n8n
 curl -s -o /dev/null -w 'HTTP %{http_code}\n' http://127.0.0.1:5678/
 ```
 
-**Comprobación:** aparecen `enabled`, `active` y `HTTP 200`. Abre nuevamente http://localhost:5678 con el túnel SSH: la cuenta y los workflows deben seguir disponibles. Si aparece `activating` o `failed`, consulta [diagnóstico de n8n](validacion.md#diagnóstico-de-fallas-frecuentes).
+**Comprobación:** aparecen `enabled`, `active` y `HTTP 200`.
+**Referencia visual — servicio n8n activo:**
+
+![Estado del servicio n8n en systemd](imagenes/08-n8n-servicio.png)
+
+*La condición correcta es `active (running)`; un HTTP 200 aislado no demuestra que systemd esté administrando el proceso.*
+ Abre nuevamente http://localhost:5678 con el túnel SSH: la cuenta y los workflows deben seguir disponibles. Si aparece `activating` o `failed`, consulta [diagnóstico de n8n](validacion.md#diagnóstico-de-fallas-frecuentes).
 
 ## Paso 12. Validación final
 
