@@ -39,11 +39,11 @@ No publicar puertos 8081/8082 (aplicaciones Docker), 3307 (MySQL publicado en lo
 | B. EC2, llave, SSH y red | 45 | Ubuntu accesible con usuario no root |
 | C. Sistema, Git y Python | 35 | Entorno Python aislado y Git operativos |
 | D. PHP, Docker Engine y Compose | 45 | PHP CLI y Docker Compose disponibles |
-| E. Sistemas empresariales, Ollama, Node.js y n8n | 55 | Despliegue preparado; ejecución sujeta a recursos y validación |
+| E. Sistemas empresariales, Ollama, Node.js y n8n | 55 | Despliegue de referencia probado; repetir y registrar en cada EC2 |
 | F. Seguridad, evidencias, detención y reinicio | 35 | Lista de verificación y EC2 detenida |
 | **Total** | **240** | **Entorno documentado** |
 
-**Condición realista:** descargas de paquetes, instalación de modelos y resolución de incidencias pueden exceder el tiempo estimado. El tramo E admite dejar el modelo Ollama **sin descargar** y n8n **sin arrancar** hasta contar con dimensionamiento y validación docente. Esto no se considera fallo de la Semana 0.
+**Condición realista:** descargas de paquetes, instalación de modelos y resolución de incidencias pueden exceder el tiempo estimado. El tramo E se validó en una EC2 de referencia el 20-11-2026, pero sus descargas pueden exceder el tiempo previsto. Para estudiantes, la descarga del modelo y el arranque de n8n dependen de recursos y autorización docente; documentar cualquier etapa pendiente.
 
 ## Procedimiento completo
 
@@ -64,8 +64,8 @@ En un repositorio **privado** del estudiante o en el medio institucional aprobad
 - EC2 Ubuntu accesible mediante SSH; llave protegida.
 - Git y Python funcionales; entorno virtual probado.
 - PHP CLI y Docker Compose verificados; despliegue de ambos sistemas y MySQL comprobado cuando el entorno lo permita, o documentado como pendiente.
-- Instalación de Ollama y Node/n8n documentada; ejecución de modelo y n8n **condicionada** a la capacidad autorizada.
+- Instalación de Ollama y Node/n8n documentada; la referencia ejecutó `qwen2.5:1.5b` y n8n 2.35.7 mediante `systemd`. Reproducir según recursos autorizados.
 - Puertos internos no expuestos públicamente.
 - Registro de consumo y detención de EC2 demostrados.
 
-**Caso transversal aprobado:** [Mesa de Ayuda Inteligente](../infraestructura-empresa/README.md). Los sistemas empresariales se entregan preconstruidos en Docker; los tres productos de IA se desarrollan en Ubuntu. **La configuración Docker aún requiere validación real de integración**, por lo que los resultados no deben declararse exitosos sin ejecutarlos.
+**Caso transversal aprobado:** [Mesa de Ayuda Inteligente](../infraestructura-empresa/README.md). Los sistemas empresariales se entregan preconstruidos en Docker; los tres productos de IA se desarrollan en Ubuntu. **Referencia validada el 20-11-2026:** Docker/MySQL y las dos interfaces, Ollama con inferencia y selección de herramienta, y n8n como servicio `systemd`. Cada estudiante debe repetir las pruebas; todavía no se ha acreditado un agente que ejecute acciones reales a través de la API.
