@@ -72,16 +72,16 @@ El curso utilizará **AWS Academy Learner Lab**, con **una instancia Amazon EC2 
 | Asignación | Una instancia individual por estudiante |
 | Sistema operativo | Ubuntu Server 24.04 LTS |
 | Acceso | SSH; túneles SSH para servicios web y APIs locales |
-| Bloque 1: agentes | Python, pip/venv, Git y cliente de API LLM |
-| Bloque 2: IA local | Apache, PHP, MySQL, Ollama y modelo LLM por definir |
-| Bloque 3: flujos | Node.js, n8n, MySQL y correo de laboratorio |
+| Bloque 1: agentes | Python, pip/venv, Git, cliente de API LLM y acceso a las APIs Docker |
+| Bloque 2: IA local | PHP CLI y Ollama en Ubuntu; MySQL y aplicaciones empresariales en Docker Compose; modelo LLM por definir |
+| Bloque 3: flujos | Node.js y n8n en Ubuntu; acceso a las APIs empresariales y MySQL en Docker; correo de laboratorio |
 | Desarrollo y evidencias | Git/GitHub y editor local conectado por SSH |
 | Crédito disponible | **USD 50 por estudiante para todo el semestre** |
 | Política de uso | EC2 encendida solo durante clases y trabajo práctico; detener al finalizar |
 
 **Decisiones pendientes:** región habilitada en AWS Academy, familia/tamaño de EC2, arquitectura de procesador, RAM, capacidad del volumen EBS y modelo Ollama. Estos parámetros se determinarán después de comprobar las restricciones del laboratorio y el rendimiento de inferencia. **No se presupone que los USD 50 alcancen para cualquier configuración**; EBS y otros recursos pueden seguir generando cargos con EC2 detenida.
 
-**Seguridad y operación:** acceso SSH restringido a la IP del estudiante; MySQL (3306), Ollama (11434) y n8n (5678) sin exposición pública; uso de túneles SSH, credenciales protegidas, datos sintéticos, consultas autorizadas y aprobación humana antes de enviar correos. El código y las evidencias se versionarán **sin publicar llaves, tokens, contraseñas ni datos privados**. Las conexiones con APIs o correo externos requieren conectividad y controles específicos.
+**Seguridad y operación:** acceso SSH restringido a la IP del estudiante; servicios Docker (8081, 8082 y 3307), Ollama (11434) y n8n (5678) sin exposición pública; uso de túneles SSH, credenciales protegidas, datos sintéticos, consultas autorizadas y aprobación humana antes de enviar correos. El código y las evidencias se versionarán **sin publicar llaves, tokens, contraseñas ni datos privados**. Las conexiones con APIs o correo externos requieren conectividad y controles específicos.
 
 La instalación, verificación, recuperación y detención de la infraestructura se desarrollan en la **[Semana 0 — Laboratorio AWS Academy](semana-00-laboratorio/README.md)**, actividad preparatoria de cuatro horas adicionales a las 72 horas del curso.
 
@@ -89,7 +89,7 @@ La instalación, verificación, recuperación y detención de la infraestructura
 
 El caso **Mesa de Ayuda Inteligente** utiliza dos aplicaciones preconstruidas: una **mesa de ayuda** para tickets y una **plataforma académica** con usuarios, cuentas y servicios ficticios. Ambas tienen interfaz web, API REST y datos persistentes en MySQL. Se despliegan juntas mediante **Docker Compose** en la EC2 individual; el agente Python, la integración PHP/Ollama y n8n se desarrollan **directamente en Ubuntu** y consumen sus APIs HTTP.
 
-**[Código, arquitectura y comandos de despliegue](infraestructura-empresa/README.md)**. Este entorno está en fase de implementación y requiere validación de extremo a extremo antes de entregarlo a estudiantes. La Semana 0 se ajustará después de esa validación.
+**[Código, arquitectura y comandos de despliegue](infraestructura-empresa/README.md)**. Este entorno está en fase de implementación y requiere validación de extremo a extremo antes de entregarlo a estudiantes. La Semana 0 ya incorpora la arquitectura Docker Compose; la validación operativa en EC2 sigue pendiente.
 
 ### Organización prevista del repositorio
 
