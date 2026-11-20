@@ -34,7 +34,7 @@ Registrar el saldo en AWS Academy antes y después de cada sesión, teniendo pre
 4. **Credenciales:** no compartir secretos en capturas, código o `.env` versionados.
 5. **Datos:** usar únicamente registros y correos ficticios.
 6. **Permisos:** no usar usuario root para programar ni conectar PHP como MySQL root. Usar `sudo docker` solo para administrar contenedores; el grupo `docker` confiere privilegios equivalentes a root.
-7. **Servicios:** no dejar Ollama, los contenedores Docker ni n8n ejecutándose sin necesidad; desactivar arranque automático si corresponde.
+7. **Servicios:** no dejar Ollama, los contenedores Docker ni n8n ejecutándose sin necesidad; detener servicios para liberar recursos cuando no se usen; n8n puede quedar habilitado para arranque automático y detenerse manualmente durante la sesión.
 8. **AWS:** no crear servicios adicionales (NAT Gateway, RDS, balanceadores, volúmenes extra, IP elástica) sin aprobación.
 9. **Respaldo:** subir código a GitHub privado/institucional, sin secretos. El disco EBS no sustituye el control de versiones.
 10. **Aislamiento:** cada estudiante utiliza exclusivamente su EC2; no compartir llaves ni credenciales.
@@ -45,8 +45,8 @@ En EC2:
 
 ```bash
 sudo ss -lntp
-sudo systemctl is-enabled ollama docker 2>/dev/null || true
-sudo systemctl is-active ollama docker 2>/dev/null || true
+sudo systemctl is-enabled ollama docker n8n 2>/dev/null || true
+sudo systemctl is-active ollama docker n8n 2>/dev/null || true
 # Dentro de infraestructura-empresa:
 sudo docker compose ps
 ```
@@ -58,7 +58,7 @@ Revisar que los puertos publicados por Docker (8081, 8082 y 3307) estén enlazad
 Al finalizar:
 
 ```bash
-sudo systemctl stop ollama 2>/dev/null || true
+sudo systemctl stop ollama n8n 2>/dev/null || true
 # Desde infraestructura-empresa, si se levantaron los sistemas:
 sudo docker compose stop
 exit
