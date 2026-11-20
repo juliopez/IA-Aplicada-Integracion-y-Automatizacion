@@ -35,7 +35,7 @@ chmod 600 ~/.ssh/ia-aplicada.pem
 ls -l ~/.ssh/ia-aplicada.pem
 ```
 
-Sustituir `NOMBRE_LLAVE.pem` por el nombre real. En sistemas con carpeta `Downloads`, adaptar la ruta. **No ejecutar estos comandos en EC2**.
+Sustituir `NOMBRE_LLAVE.pem` por el nombre real. En sistemas con carpeta `Downloads`, adaptar la ruta. **No ejecutar estos comandos en EC2**. Si se prefiere conservar la llave en Descargas, no moverla: ejecutar `chmod 600 ~/Descargas/NOMBRE_LLAVE.pem` y utilizar **esa misma ruta** en cada comando `ssh -i`. Comprobar su ubicación con `ls -l ~/Descargas/*.pem ~/Downloads/*.pem ~/.ssh/*.pem 2>/dev/null` (no compartir la llave).
 
 ## 4. Conectarse por SSH (computador personal)
 
@@ -92,6 +92,17 @@ ssh -N -i ~/.ssh/ia-aplicada.pem -L 5678:127.0.0.1:5678 ubuntu@IP_PUBLICA_EC2
 # Ollama, solo cuando esté iniciado
 ssh -N -i ~/.ssh/ia-aplicada.pem -L 11434:127.0.0.1:11434 ubuntu@IP_PUBLICA_EC2
 ```
+
+**Si 8081 o 8082 ya están ocupados en el computador personal**, cerrar el túnel anterior con Ctrl+C y utilizar puertos locales alternativos, sin modificar Docker ni AWS:
+
+```bash
+ssh -N -o ExitOnForwardFailure=yes -i ~/.ssh/ia-aplicada.pem \
+  -L 18081:127.0.0.1:8081 \
+  -L 18082:127.0.0.1:8082 \
+  ubuntu@IP_PUBLICA_EC2
+```
+
+En ese caso abrir `http://localhost:18081` y `http://localhost:18082`. Si la llave sigue en Descargas, reemplazar `~/.ssh/ia-aplicada.pem` por su ruta real. **Mantener abierta la terminal SSH mientras se utilizan las interfaces**.
 
 Abrir `http://localhost:8081` (tickets), `http://localhost:8082` (académico), `http://localhost:8083` (PHP del estudiante), `http://localhost:5678` (n8n) o usar `curl http://localhost:11434/api/tags` en el **computador personal**, según el servicio. Detener cada túnel con Ctrl+C. Si un puerto local ya está ocupado, cambiar el **número izquierdo** del túnel.
 
