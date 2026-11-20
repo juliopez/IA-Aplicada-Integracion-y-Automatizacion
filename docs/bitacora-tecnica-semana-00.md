@@ -4,7 +4,7 @@
 
 ## Entorno utilizado
 - Ubuntu Server 24.04 LTS en AWS EC2.
-- Instancia de referencia: **t2.large, 8 GiB RAM**. **No** constituye una recomendación definitiva para estudiantes.
+- Instancia utilizada: **t2.large (2 vCPU, 8 GiB RAM), 99 GiB EBS**. Configuración efectivamente probada; su costo para todo el semestre sigue por verificar.
 - Docker Engine/Compose, MySQL y dos aplicaciones empresariales PHP/Apache; Ollama y n8n instalados directamente en Ubuntu.
 - Ollama 0.40.16; modelo `qwen2.5:1.5b` con cuantización Q4_K_M, aproximadamente 986 MB de descarga.
 - Node.js 22.23.5, npm 10.9.9, n8n 2.35.7.
@@ -23,7 +23,7 @@ La instalación con npm finalizó, pese a advertencias de paquetes obsoletos. Se
 Se detectó un conflicto: la instancia manual de n8n seguía ocupando el puerto 5678; el servicio `systemd` reiniciaba y mostraba `status=1/FAILURE`. Tras detener el proceso manual y reiniciar el servicio, se observó `active (running)` y respuesta HTTP 200. Apareció el aviso `Unknown credential name confluenceCloudOAuth2Api`, que no impidió el arranque final. También se observó una advertencia sobre Python task runner sin entorno virtual; no se verificó su funcionalidad.
 
 ## Decisiones que permanecen abiertas
-1. Tipo EC2 y tamaño EBS compatibles con presupuesto máximo de USD 50 por estudiante.
+1. Verificar que `t2.large` y 99 GiB EBS sean compatibles con el presupuesto máximo de USD 50 por estudiante durante el semestre.
 2. Modelo local definitivo y pruebas de rendimiento/concurrencia.
 3. Acceso y credenciales para API LLM externa y correo de prueba.
 4. Prueba integral del agente con ejecución efectiva de herramientas sobre APIs empresariales.
