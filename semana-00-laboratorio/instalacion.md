@@ -132,7 +132,7 @@ bash probar.sh
 
 Los frontend se consultan en `http://127.0.0.1:8081` y `http://127.0.0.1:8082` **desde EC2**, o por túneles SSH desde el computador personal. `probar.sh` requiere `jq` (instalado en el tramo A) y crea un ticket de prueba; también cambia una cuenta ficticia a activa. No ejecutarlo sobre datos reales.
 
-**Validación de referencia (20-11-2026):** en una EC2 Ubuntu 24.04 se confirmó Docker/MySQL saludable, ambos servicios PHP iniciados, `bash probar.sh` satisfactorio y ambas interfaces accesibles desde un navegador local mediante túneles SSH. La validación corresponde a esta instalación de referencia, no sustituye las pruebas de cada estudiante. Ante fallos, consultar `validacion.md` antes de reinicializar volúmenes.
+**Resultado esperado:** ambos endpoints `/api/health` responden sin error, `sudo docker compose ps` muestra los servicios activos y `bash probar.sh` termina satisfactoriamente. Si falla, consultar [validación](validacion.md) antes de modificar volúmenes.
 
 Para detener los contenedores sin borrar MySQL:
 
@@ -174,7 +174,7 @@ sudo systemctl restart ollama
 sudo ss -lntp | grep ':11434' || true
 ```
 
-**Modelo probado en la EC2 de referencia (20-11-2026, t2.large con 8 GiB de RAM):** `qwen2.5:1.5b`. Para reproducir la prueba, siempre que el docente autorice recursos:
+**Modelo de ejemplo, sujeto a autorización docente:** `qwen2.5:1.5b`. Ejecutar lo siguiente únicamente si el docente autoriza este modelo y la capacidad de la instancia:
 
 ```bash
 ollama pull qwen2.5:1.5b
@@ -183,7 +183,7 @@ ollama show qwen2.5:1.5b
 ollama list
 ```
 
-En `ollama show` comprobar que **Capabilities** incluya `tools`. Esto acredita capacidad declarada, pero **no** demuestra una llamada funcional. Ejecutar además la prueba V08b documentada en [validacion.md](validacion.md), que comprueba `message.tool_calls[0].function.name == "consultar_tickets"`. En la EC2 de referencia la primera consulta devolvió `content` vacío sin `tool_calls`; una segunda consulta explícita con `temperature: 0` sí seleccionó la función. Registrar ambos resultados sin afirmar que se ejecutó la API.
+En `ollama show` comprobar que **Capabilities** incluya `tools`. Esto acredita capacidad declarada, pero **no** demuestra una llamada funcional. Ejecutar además la prueba V08b documentada en [validacion.md](validacion.md), que comprueba `message.tool_calls[0].function.name == "consultar_tickets"`. Registrar la salida observada. La selección de una herramienta no significa que se haya ejecutado una API empresarial.
 
 No ejecutar las líneas con el marcador literal. Detener el servicio para ahorrar recursos (detener EC2 es lo que evita horas de cómputo):
 
@@ -191,9 +191,9 @@ No ejecutar las líneas con el marcador literal. Detener el servicio para ahorra
 sudo systemctl disable --now ollama
 ```
 
-## F. Node.js 22 y n8n como servicio systemd (validado en EC2)
+## F. Node.js 22 y n8n como servicio systemd
 
-**Prueba de referencia: 20-11-2026, Ubuntu 24.04, Node.js v22.23.5, npm 10.9.9 y n8n 2.35.7.** Verificar la compatibilidad vigente en [documentación oficial de n8n](https://docs.n8n.io/hosting/installation/npm/) antes de reproducir; no fijar estas versiones como requisito universal.
+Verificar la compatibilidad vigente en la [documentación oficial de n8n](https://docs.n8n.io/hosting/installation/npm/) antes de instalar. Las versiones pueden variar.
 
 ```bash
 curl -fsSL https://deb.nodesource.com/setup_22.x -o /tmp/nodesource-setup.sh
@@ -209,7 +209,7 @@ which n8n
 whoami
 ```
 
-En la EC2 probada, `which n8n` devolvió `/usr/bin/n8n` y `whoami` devolvió `ubuntu`. **Comprobar ambas rutas antes de crear el servicio**; si son distintas, adaptar `ExecStart`, `User` y `HOME`. Las advertencias `npm WARN deprecated` no impidieron la instalación, pero deben revisarse al actualizar.
+**Antes de crear el servicio:** comprobar que `which n8n` muestre `/usr/bin/n8n` y que `whoami` muestre `ubuntu`. Si difieren, adaptar `ExecStart`, `User` y `HOME` en el archivo de servicio; solicitar apoyo si es necesario.
 
 ### Primera apertura y creación de cuenta
 
@@ -257,7 +257,7 @@ curl -s -o /dev/null -w 'HTTP %{http_code}\n' http://127.0.0.1:5678/
 
 **Criterio de aprobación:** `Active: active (running)`, `enabled` y `HTTP 200`, sin reinicios repetidos. Una respuesta HTTP 200 por sí sola no demuestra que sea la instancia administrada por systemd: puede provenir de una ejecución manual todavía activa.
 
-**Incidente reproducido y resuelto (20-11-2026):** el servicio entró en `activating (auto-restart)` y `status=1/FAILURE` porque otra instancia de n8n ocupaba el puerto 5678. El registro `journalctl` mostró `n8n's port 5678 is already in use`. Se detuvo la instancia manual con Ctrl+C y se ejecutó `sudo systemctl restart n8n`; el servicio pasó a `active (running)`, mostró `Editor is now accessible via: http://localhost:5678` y mantuvo la versión 2.35.7. El aviso `Unknown credential name confluenceCloudOAuth2Api` siguió apareciendo, pero no fue la causa de ese fallo.
+**Si el servicio no inicia:** revisar los comandos siguientes. Si el puerto 5678 está ocupado por una ejecución manual de n8n, detener esa ejecución con Ctrl+C y ejecutar `sudo systemctl restart n8n`. No mantener dos instancias simultáneas. Para otros errores, consultar [validación](validacion.md).
 
 ```bash
 sudo journalctl -u n8n -n 50 --no-pager
